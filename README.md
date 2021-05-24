@@ -1,6 +1,6 @@
 # FoodFindAR
 
-FoodFindAR is an AR-App, that shows the distance and direction to a closeby restaurant of your choice.
+FoodFindAR is an AR-App, that shows the distance and direction to a nearby restaurant of your choice.
 
 ## Features
 
