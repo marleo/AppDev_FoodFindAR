@@ -1,23 +1,23 @@
 # FoodFindAR
 
-FoodFindAR ist eine AR-App, die dir in Echtzeit die Entfernung und die Richtung zu einem Restaurant deiner Wahl in deiner Nähe anzeigt.
+FoodFindAR is an AR-App, that shows the distance and direction to a closeby restaurant of your choice.
 
 ## Features
 
-- Sieh dir die Richtung zum gewählten Restaurant in der AR-Ansicht an
+- Get directions to your chosen restaurant via an AR-View
 
-- Restaurantbewertungen sehen
+- Check restaurant ratings
 
-- Restaurants in der Nähe anzeigen
+- See which restaurants are nearby
 
-### API's (nicht fixiert)
+### API's (one will be chosen going forward)
 Google Places (https://cloud.google.com/maps-platform/places?hl=de)
 
 OSMDroid (https://github.com/osmdroid/osmdroid)
 
 Overpass API (https://github.com/drolbr/Overpass-API)
 
-## Gruppenmitglieder
+## Groupmembers
 
 Mira Kofler
 
