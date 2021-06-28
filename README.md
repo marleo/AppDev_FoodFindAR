@@ -17,6 +17,10 @@ OSMDroid (https://github.com/osmdroid/osmdroid)
 
 Overpass API (https://github.com/drolbr/Overpass-API)
 
+# Prototyp
+
+Check it out (https://www.figma.com/proto/kHPQnljHRPmvtl42gGO1uq/Food-FindAR?page-id=0%3A1&node-id=2%3A84&viewport=1254%2C1174%2C0.2884855270385742&scaling=contain)
+
 ## Groupmembers
 
 Mira Kofler
