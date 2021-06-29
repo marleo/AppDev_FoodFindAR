@@ -10,12 +10,13 @@ FoodFindAR is an AR-App, that shows the distance and direction to a nearby resta
 
 - See which restaurants are nearby
 
-### API's (one will be chosen going forward)
-Google Places (https://cloud.google.com/maps-platform/places?hl=de)
+### Libraries / API's used
 
-OSMDroid (https://github.com/osmdroid/osmdroid)
+OverpassAPI (https://github.com/drolbr/Overpass-API) - fetching location data
 
-Overpass API (https://github.com/drolbr/Overpass-API)
+GSON (https://github.com/google/gson) - parsing JSON Objects
+
+Volley (https://github.com/google/volley) - Handling HTTP Requests
 
 # Prototyp
 
