@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.google.gson.JsonObject
-import de.westnordost.osmapi.OsmConnection
-import de.westnordost.osmapi.overpass.OverpassMapDataApi
-import java.lang.Exception
-import java.net.HttpURLConnection
-import java.net.URL
 import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
+
+    val coordinates : String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
+    var amenity : String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,37 +27,34 @@ class MainActivity : AppCompatActivity() {
     private fun tryOverpasser() {
         thread {
             val queue = Volley.newRequestQueue(this)
-            val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node[\"amenity\"~\"restaurant\"](46.616062,14.265438,46.626062,14.275438);way[\"amenity\"~\"restaurant\"](46.616062,14.265438,46.626062,14.275438);relation[\"amenity\"~\"restaurant\"](46.616062,14.265438,46.626062,14.275438););out body;>;out skel;"
-            var res = ""
+            val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
+
 
             val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                 { response ->
-                    res = "Response: %s".format(response.toString())
-                    Log.i("Response", "Im here")
+                    val responseObject = Gson().fromJson(response.toString(), ApiResponse::class.java)
+
+                    val nameList = mutableListOf<String>()
+                    val streetList = mutableListOf<String>()
+
+                    for(element in responseObject.elements!!){
+                        if(element.tags?.name != "" && element.tags?.name != null && element.tags.amenity == "restaurant"){
+                            nameList.add(element.tags.name)
+                        }
+
+                        if(element.tags?.street != "" && element.tags?.street != null && element.tags.amenity == "restaurant"){
+                            streetList.add(element.tags.street)
+                        }
+                    }
+
+                    Log.i("Names", nameList.toString())
+                    Log.i("Streets", streetList.toString())
                 },
                 { error ->
-                    // TODO: Handle error
+                    error.printStackTrace()
                 }
             )
-
             queue.add(jsonObjectRequest)
-
-
-// Add the request to the RequestQueue.
-
-            /*
-            val gson = Gson()
-
-            try {
-                val connection = OsmConnection("https://overpass-api.de/api/", "my user agent", null)
-                val overpass = OverpassMapDataApi(connection)
-                val count = overpass.quer
-                Log.i("Query", gson.toJson(count))
-            } catch (e : Exception) {
-                Log.i("Error", "Error catch")
-                e.printStackTrace()
-            }
-            */
         }
         Log.i("Response", "Response")
     }
