@@ -3,25 +3,21 @@ package com.uni.foodfindar
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.ImageView
 
-class Settings : AppCompatActivity() {
-    lateinit var setting: Button
+class Menu : AppCompatActivity() {
+    lateinit var menu: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_menu)
 
-        setting = findViewById(R.id.settings)
+        menu = findViewById(R.id.menu)
 
-        setting.setOnClickListener{
-
-
+        menu.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-            overridePendingTransition(0, 0)
+            overridePendingTransition(0,0)
         }
     }
 }

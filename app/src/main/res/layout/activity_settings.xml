@@ -18,6 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
+    <ImageView
+        android:id="@+id/menu_button"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/settings"
+        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109"
+        app:srcCompat="@drawable/ic_menu_button" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="200dp"
@@ -86,7 +100,7 @@
         app:layout_constraintVertical_bias="0.435" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/menuFilter"
         android:layout_width="419dp"
         android:layout_height="741dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,7 +110,7 @@
         app:srcCompat="@drawable/menu_filter" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/settingFilter"
         android:layout_width="133dp"
         android:layout_height="134dp"
         android:layout_marginStart="24dp"
@@ -135,11 +149,11 @@
         android:fontFamily="@font/ropa_sans"
         android:text="Settings"
         android:textColor="#DF6693"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintBottom_toBottomOf="@+id/settingFilter"
         app:layout_constraintEnd_toStartOf="@+id/settings"
         app:layout_constraintHorizontal_bias="0.589"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/settingFilter"
+        app:layout_constraintTop_toTopOf="@+id/settingFilter"
         app:layout_constraintVertical_bias="0.093" />
 
 
