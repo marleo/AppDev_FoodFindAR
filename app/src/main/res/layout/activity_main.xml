@@ -15,4 +15,15 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/buttonCamera"
+        android:layout_width="68dp"
+        android:layout_height="44dp"
+        app:backgroundTint="#D15D85"
+        app:icon="@android:drawable/ic_menu_camera"
+        tools:layout_editor_absoluteX="177dp"
+        tools:layout_editor_absoluteY="457dp"
+        tools:ignore="MissingConstraints" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
