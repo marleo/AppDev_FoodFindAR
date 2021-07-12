@@ -101,8 +101,10 @@
 
     <ImageView
         android:id="@+id/menuFilter"
-        android:layout_width="419dp"
-        android:layout_height="741dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
