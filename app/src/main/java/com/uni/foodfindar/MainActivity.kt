@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         setting.setOnClickListener{
             val intent = Intent(this, Settings::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
 
 
