@@ -14,10 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodfindar">
-        <activity android:name=".Hilfe"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Hilfe" />
         <activity android:name=".Menu" />
         <activity android:name=".Settings" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
