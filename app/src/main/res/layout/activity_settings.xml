@@ -114,7 +114,7 @@
     <ImageView
         android:id="@+id/settingFilter"
         android:layout_width="133dp"
-        android:layout_height="134dp"
+        android:layout_height="150dp"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -157,6 +157,43 @@
         app:layout_constraintStart_toStartOf="@+id/settingFilter"
         app:layout_constraintTop_toTopOf="@+id/settingFilter"
         app:layout_constraintVertical_bias="0.093" />
+
+    <Button
+        android:id="@+id/standort"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="115dp"
+        android:layout_height="28dp"
+        android:background="#00FFFFFF"
+        android:backgroundTint="@color/button_tint"
+        android:fontFamily="@font/ropa_sans"
+        android:text="Standort prüfen"
+        android:textColor="#C9FFFFFF"
+        android:textSize="8sp"
+        app:backgroundTint="@color/button_tint"
+        app:backgroundTintMode="add"
+        app:iconPadding="8dp"
+        app:iconTint="@color/button_tint"
+        app:layout_constraintBottom_toBottomOf="@+id/settingFilter"
+        app:layout_constraintEnd_toEndOf="@+id/settingFilter"
+        app:layout_constraintStart_toStartOf="@+id/settingFilter"
+        app:layout_constraintTop_toTopOf="@+id/settingFilter"
+        app:layout_constraintVertical_bias="0.336"
+        app:rippleColor="#00FFFFFF" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="24dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginRight="96dp"
+        android:layout_marginBottom="85dp"
+        app:layout_constraintBottom_toBottomOf="@+id/settingFilter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/standort"
+        app:layout_constraintTop_toTopOf="@+id/standort"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_donut_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
