@@ -8,9 +8,16 @@ import android.widget.Button
 class Menu : AppCompatActivity() {
     lateinit var menu: Button
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0,0)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+
+
 
         menu = findViewById(R.id.menu)
 

@@ -27,6 +27,7 @@
         android:fontFamily="@font/ropa_sans"
         android:text="Search"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#E8FFFFFF"
         android:textSize="18sp"
         android:typeface="sans"
         app:backgroundTint="#CEF92B2B"

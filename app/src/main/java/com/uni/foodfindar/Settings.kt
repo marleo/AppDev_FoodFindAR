@@ -10,6 +10,11 @@ import android.widget.ImageView
 class Settings : AppCompatActivity() {
     lateinit var setting: Button
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(0,0)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
