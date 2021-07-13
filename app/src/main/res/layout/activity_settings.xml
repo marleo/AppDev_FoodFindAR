@@ -107,10 +107,10 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/menu_filter" />
 
     <ImageView
@@ -126,6 +126,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.009"
         app:srcCompat="@drawable/setting_background" />
+
+    <Button
+        android:id="@+id/hilfe"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="115dp"
+        android:layout_height="28dp"
+        android:background="#00FFFFFF"
+        android:backgroundTint="@color/button_tint"
+        android:fontFamily="@font/ropa_sans"
+        android:text="Hilfe"
+        android:textColor="#C9FFFFFF"
+        android:textSize="8sp"
+        app:backgroundTint="@color/button_tint"
+        app:backgroundTintMode="add"
+        app:iconPadding="8dp"
+        app:iconTint="@color/button_tint"
+        app:layout_constraintBottom_toBottomOf="@+id/settingFilter"
+        app:layout_constraintEnd_toEndOf="@+id/settingFilter"
+        app:layout_constraintStart_toStartOf="@+id/settingFilter"
+        app:layout_constraintTop_toTopOf="@+id/settingFilter"
+        app:layout_constraintVertical_bias="0.918"
+        app:rippleColor="#00FFFFFF" />
 
     <Button
         android:id="@+id/filter"
@@ -229,6 +251,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/filter"
         app:layout_constraintTop_toTopOf="@+id/filter"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_donut_button" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="24dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hilfe"
+        app:layout_constraintEnd_toEndOf="@+id/hilfe"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/hilfe"
+        app:layout_constraintTop_toTopOf="@+id/hilfe"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_donut_button" />
 

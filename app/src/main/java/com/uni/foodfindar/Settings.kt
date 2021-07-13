@@ -19,6 +19,7 @@ class Settings : AppCompatActivity() {
     lateinit var setting: Button
     lateinit var location: Button
     lateinit var filter: Button
+    lateinit var hilfe: Button
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onBackPressed() {
@@ -33,6 +34,7 @@ class Settings : AppCompatActivity() {
         setting = findViewById(R.id.settings)
         location = findViewById(R.id.standort)
         filter = findViewById(R.id.filter)
+        hilfe = findViewById(R.id.hilfe)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -43,6 +45,11 @@ class Settings : AppCompatActivity() {
 
         filter.setOnClickListener{
             showDialog()
+        }
+
+        hilfe.setOnClickListener{
+            val intent = Intent(this, Hilfe::class.java)
+            startActivity(intent)
         }
 
         findViewById<Button>(R.id.standort).setOnClickListener(){
@@ -89,8 +96,7 @@ class Settings : AppCompatActivity() {
         }
 
         builder.setPositiveButton("OK"){ _, _ ->
-
-
+            Toast.makeText(applicationContext, "Auswahl wurde übernommen!", Toast.LENGTH_SHORT).show()
         }
 
         builder.setNegativeButton("Cancel"){_, _ ->
