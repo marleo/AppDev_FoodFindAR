@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var setting:Button
     lateinit var menu:Button
+    lateinit var search:Button
 
 
 
@@ -26,9 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         setting = findViewById(R.id.settings)
         menu = findViewById(R.id.menu)
+        search = findViewById(R.id.search)
 
 
-
+        search.setOnClickListener{
+            Toast.makeText(applicationContext, "${Gps().lati} ${Gps().longi}", Toast.LENGTH_SHORT).show()
+        }
 
 
         setting.setOnClickListener{

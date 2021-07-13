@@ -56,6 +56,9 @@ class Settings : AppCompatActivity() {
         task.addOnSuccessListener {
             if(it != null){
                 Toast.makeText(applicationContext, "${it.latitude} ${it.longitude}", Toast.LENGTH_SHORT).show()
+                Gps().lati = it.latitude
+                Gps().longi = it.longitude
+                Toast.makeText(applicationContext, "${Gps().lati} ${Gps().longi}", Toast.LENGTH_SHORT).show()
             }
         }
 
