@@ -15,8 +15,7 @@ class Menu : AppCompatActivity() {
         menu = findViewById(R.id.menu)
 
         menu.setOnClickListener{
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            finish()
             overridePendingTransition(0,0)
         }
     }
