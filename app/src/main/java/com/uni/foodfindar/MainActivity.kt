@@ -1,15 +1,23 @@
 package com.uni.foodfindar
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
+import java.lang.Exception
 import kotlin.concurrent.thread
 
 
@@ -21,80 +29,84 @@ class MainActivity : AppCompatActivity() {
     var latitude : Double? = 0.0
     private lateinit var fusedLocationClient : FusedLocationProviderClient
 
-    @SuppressLint("MissingPermission") //TODO: CHECK FAILURE (val location)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         tryOverpasser()
+        getLocation()
 
+        val button : Button = findViewById(R.id.button)
 
-        //TODO: Check periodically, Ask user for location permission
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
-            Log.i("Location", "Location tracked!")
-            longitude = location?.longitude
-            latitude = location?.latitude
-            Log.i("Location", "Lat: $latitude Lon: $longitude ")
+        button.setOnClickListener {
+            val intent = Intent(this, activity_map::class.java)
+            intent.putExtra("Longitude", longitude)
+            intent.putExtra("Latitude", latitude)
+            startActivity(intent)
         }
-        fusedLocationClient.lastLocation.addOnFailureListener { e : Exception ->
-            Log.i("Location", "Location failed!")
+    }
+
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getLastKnownPosition()
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(ACCESS_COARSE_LOCATION), 1)
+            getLocation()
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private fun getLastKnownPosition() {
+        val task: Task<Location> = LocationServices.getFusedLocationProviderClient(this).lastLocation
+        task.addOnSuccessListener { location : Location? ->
+            Log.i("Sensors", "Time=${location?.time} Latitude=${location?.latitude} Longitude=${location?.longitude}")
+            latitude = location?.latitude
+            longitude = location?.longitude
+        }
+        task.addOnFailureListener { e : Exception ->
             e.printStackTrace()
         }
-
-
-
-    /*
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        longitude = location?.longitude
-        latitude = location?.latitude
-     */
-
     }
 
 
-    private fun tryOverpasser() {
-        thread {
-            val queue = Volley.newRequestQueue(this)
-            val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
+        private fun tryOverpasser() {
+            thread {
+                val queue = Volley.newRequestQueue(this)
+                val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
 
-            val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                    { response ->
-                        val responseObject = Gson().fromJson(response.toString(), ApiResponse::class.java)
+                val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+                        { response ->
+                            val responseObject = Gson().fromJson(response.toString(), ApiResponse::class.java)
 
-                        val nameList = mutableListOf<String>()
-                        val streetList = mutableListOf<String>()
-                        val coordinateList = mutableListOf<Double>()
+                            val nameList = mutableListOf<String>()
+                            val streetList = mutableListOf<String>()
+                            val coordinateList = mutableListOf<Double>()
 
-                        //TODO: Write to object
-                        for (element in responseObject.elements!!) {
-                            if (element.tags?.name != "" && element.tags?.name != null && element.tags.amenity == "restaurant") {
-                                nameList.add(element.tags.name)
+                            //TODO: Write to object
+                            for (element in responseObject.elements!!) {
+                                if (element.tags?.name != "" && element.tags?.name != null && element.tags.amenity == "restaurant") {
+                                    nameList.add(element.tags.name)
+                                }
+                                if (element.tags?.street != "" && element.tags?.street != null && element.tags.amenity == "restaurant") {
+                                    streetList.add(element.tags.street)
+                                }
+                                if (element.lat != 0.0 && element.lat != null && element.lon != 0.0 && element.lon != null && element.tags?.amenity == "restaurant") {
+                                    coordinateList.add(element.lat)
+                                    coordinateList.add(element.lon)
+                                }
                             }
-                            if (element.tags?.street != "" && element.tags?.street != null && element.tags.amenity == "restaurant") {
-                                streetList.add(element.tags.street)
-                            }
-                            if (element.lat != 0.0 && element.lat != null &&  element.lon != 0.0 && element.lon != null && element.tags?.amenity == "restaurant") {
-                                coordinateList.add(element.lat)
-                                coordinateList.add(element.lon)
-                            }
+
+                            //TODO: Remove Logs
+                            Log.i("Names", nameList.toString())
+                            Log.i("Coordinates (Lat)", coordinateList.toString())
+                            Log.i("Streets", streetList.toString())
+                        },
+                        { error ->
+                            error.printStackTrace()
                         }
-
-                        //TODO: Remove Logs
-                        Log.i("Names", nameList.toString())
-                        Log.i("Coordinates (Lat)", coordinateList.toString())
-                        Log.i("Streets", streetList.toString())
-                    },
-                    { error ->
-                        error.printStackTrace()
-                    }
-            )
-            queue.add(jsonObjectRequest)
+                )
+                queue.add(jsonObjectRequest)
+            }
+            Log.i("Response", "Response")
         }
-        Log.i("Response", "Response")
-    }
-
 
 }

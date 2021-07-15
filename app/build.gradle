@@ -36,6 +36,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.gms:play-services-location:18.0.0' //for location data
+    implementation 'org.osmdroid:osmdroid-android:6.1.10'
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation 'de.westnordost:osmapi-overpass:2.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
