@@ -9,6 +9,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.android.volley.Request
@@ -33,23 +34,21 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var cont : Context
-    lateinit var setting:Button
-    lateinit var menu:Button
-    lateinit var search:Button
-    var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
-    var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
+    private lateinit var setting:Button
+    private lateinit var menu:Button
+    private lateinit var search:Button
+    private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
+    private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
-    var bbSize = 0.03
-    var userPosLon : Double? = 0.0
-    var userPosLat : Double? = 0.0
-    var bbLonMin : Double? = 0.0
-    var bbLatMin : Double? = 0.0
-    var bbLonMax : Double? = 0.0
-    var bbLatMax : Double? = 0.0
+    private var bbSize = 0.0175
+    private var userPosLon : Double? = 0.0
+    private var userPosLat : Double? = 0.0
+    private var bbLonMin : Double? = 0.0
+    private var bbLatMin : Double? = 0.0
+    private var bbLonMax : Double? = 0.0
+    private var bbLatMax : Double? = 0.0
 
     private lateinit var sortedPlacesObject : List<Places>
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,8 +102,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun tryOverpasser() = runBlocking {
             val job = launch {
-                Log.i("Coroutine", "Accept")
-
                 val queue = Volley.newRequestQueue(cont)
                 val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
                 val placesObject = ArrayList<Places>()
@@ -120,25 +117,41 @@ class MainActivity : AppCompatActivity() {
                             val tag = element.tags
                             if (tag?.name != "" && tag?.name != null && tag.amenity == "restaurant") {
                                 if(element.lat != null && element.lon != null){
-                                    placesObject.add(
-                                        Places(
-                                            tag.name,
-                                            tag.street,
-                                            element.lat,
-                                            element.lon,
-                                            tag.website,
-                                            distance(userPosLat!!, userPosLon!!, element.lat, element.lon)
+                                    if(tag.housenumber != null) {
+                                        placesObject.add(
+                                            Places(
+                                                tag.name,
+                                                "" + tag.street + " " + tag.housenumber,
+                                                element.lat,
+                                                element.lon,
+                                                tag.website,
+                                                distance(userPosLat!!, userPosLon!!, element.lat, element.lon)
+                                            )
                                         )
-                                    )
+                                    } else {
+                                        placesObject.add(
+                                            Places(
+                                                tag.name,
+                                                tag.street,
+                                                element.lat,
+                                                element.lon,
+                                                tag.website,
+                                                distance(userPosLat!!, userPosLon!!, element.lat, element.lon)
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
                         sortedPlacesObject = placesObject.sortedWith(compareBy { it.distance })
-                        debugPlaces()
+
+                        Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
+
+                        debugPlaces() //must be deleted later
                     },
                     { e ->
+                        Toast.makeText(cont, "Internet connection failed.. Please check your settings", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
-                        Log.i("Coroutine", "Decline")
                     }
                 )
                 queue.add(jsonObjectRequest)
@@ -188,6 +201,6 @@ class MainActivity : AppCompatActivity() {
                 "${places.name} || ${places.address} || Lat: ${places.lat} || Lon: ${places.lon} || ${places.website} || ${places.distance}km"
             )
         }
-    }
+    } //Must be deleted later
 
 }
