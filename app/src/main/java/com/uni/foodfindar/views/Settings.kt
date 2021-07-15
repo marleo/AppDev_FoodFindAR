@@ -1,15 +1,14 @@
-package com.uni.foodfindar
+package com.uni.foodfindar.views
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.uni.foodfindar.R
 
 
 class Settings : AppCompatActivity() {

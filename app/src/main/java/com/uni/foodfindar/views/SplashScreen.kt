@@ -1,9 +1,10 @@
-package com.uni.foodfindar
+package com.uni.foodfindar.views
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.uni.foodfindar.R
 
 class SplashScreen : AppCompatActivity() {
     lateinit var handler: Handler
