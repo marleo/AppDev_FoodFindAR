@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodfindar">
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".Hilfe" />
+        <activity android:name=".Help" />
         <activity android:name=".Menu" />
         <activity android:name=".Settings" />
         <activity android:name=".SplashScreen"

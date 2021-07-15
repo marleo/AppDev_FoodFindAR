@@ -128,14 +128,14 @@
         app:srcCompat="@drawable/setting_background" />
 
     <Button
-        android:id="@+id/hilfe"
+        android:id="@+id/help"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="115dp"
         android:layout_height="28dp"
         android:background="#00FFFFFF"
         android:backgroundTint="@color/button_tint"
         android:fontFamily="@font/ropa_sans"
-        android:text="Hilfe"
+        android:text="Help"
         android:textColor="#C9FFFFFF"
         android:textSize="8sp"
         app:backgroundTint="@color/button_tint"
@@ -146,7 +146,7 @@
         app:layout_constraintEnd_toEndOf="@+id/settingFilter"
         app:layout_constraintStart_toStartOf="@+id/settingFilter"
         app:layout_constraintTop_toTopOf="@+id/settingFilter"
-        app:layout_constraintVertical_bias="0.918"
+        app:layout_constraintVertical_bias="0.737"
         app:rippleColor="#00FFFFFF" />
 
     <Button
@@ -168,7 +168,7 @@
         app:layout_constraintEnd_toEndOf="@+id/settingFilter"
         app:layout_constraintStart_toStartOf="@+id/settingFilter"
         app:layout_constraintTop_toTopOf="@+id/settingFilter"
-        app:layout_constraintVertical_bias="0.631"
+        app:layout_constraintVertical_bias="0.442"
         app:rippleColor="#00FFFFFF" />
 
     <Button
@@ -204,43 +204,6 @@
         app:layout_constraintTop_toTopOf="@+id/settingFilter"
         app:layout_constraintVertical_bias="0.093" />
 
-    <Button
-        android:id="@+id/standort"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="115dp"
-        android:layout_height="28dp"
-        android:background="#00FFFFFF"
-        android:backgroundTint="@color/button_tint"
-        android:fontFamily="@font/ropa_sans"
-        android:text="Standort prüfen"
-        android:textColor="#C9FFFFFF"
-        android:textSize="8sp"
-        app:backgroundTint="@color/button_tint"
-        app:backgroundTintMode="add"
-        app:iconPadding="8dp"
-        app:iconTint="@color/button_tint"
-        app:layout_constraintBottom_toBottomOf="@+id/settingFilter"
-        app:layout_constraintEnd_toEndOf="@+id/settingFilter"
-        app:layout_constraintStart_toStartOf="@+id/settingFilter"
-        app:layout_constraintTop_toTopOf="@+id/settingFilter"
-        app:layout_constraintVertical_bias="0.336"
-        app:rippleColor="#00FFFFFF" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="24dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginRight="96dp"
-        android:layout_marginBottom="85dp"
-        app:layout_constraintBottom_toBottomOf="@+id/settingFilter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/standort"
-        app:layout_constraintTop_toTopOf="@+id/standort"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_donut_button" />
-
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="24dp"
@@ -259,11 +222,11 @@
         android:layout_width="24dp"
         android:layout_height="19dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/hilfe"
-        app:layout_constraintEnd_toEndOf="@+id/hilfe"
+        app:layout_constraintBottom_toBottomOf="@+id/help"
+        app:layout_constraintEnd_toEndOf="@+id/help"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/hilfe"
-        app:layout_constraintTop_toTopOf="@+id/hilfe"
+        app:layout_constraintStart_toStartOf="@+id/help"
+        app:layout_constraintTop_toTopOf="@+id/help"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_donut_button" />
 

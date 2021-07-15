@@ -30,10 +30,6 @@ class MainActivity : AppCompatActivity() {
         search = findViewById(R.id.search)
 
 
-        search.setOnClickListener{
-            Toast.makeText(applicationContext, "${Gps().lati} ${Gps().longi}", Toast.LENGTH_SHORT).show()
-        }
-
 
         setting.setOnClickListener{
 

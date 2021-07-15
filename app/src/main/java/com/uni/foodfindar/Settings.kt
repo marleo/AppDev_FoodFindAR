@@ -4,10 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -19,7 +16,7 @@ class Settings : AppCompatActivity() {
     lateinit var setting: Button
     lateinit var location: Button
     lateinit var filter: Button
-    lateinit var hilfe: Button
+    lateinit var help: Button
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onBackPressed() {
@@ -32,9 +29,8 @@ class Settings : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         setting = findViewById(R.id.settings)
-        location = findViewById(R.id.standort)
         filter = findViewById(R.id.filter)
-        hilfe = findViewById(R.id.hilfe)
+        help = findViewById(R.id.help)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -47,31 +43,12 @@ class Settings : AppCompatActivity() {
             showDialog()
         }
 
-        hilfe.setOnClickListener{
-            val intent = Intent(this, Hilfe::class.java)
+        help.setOnClickListener{
+            val intent = Intent(this, Help::class.java)
             startActivity(intent)
         }
 
-        findViewById<Button>(R.id.standort).setOnClickListener(){
-            fetchLocation()
-        }
 
-    }
-   private fun fetchLocation(){
-        val task = fusedLocationProviderClient.lastLocation
-
-        if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION )
-            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        ){
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),101)
-            return
-        }
-
-        task.addOnSuccessListener {
-            if(it != null){
-                Toast.makeText(applicationContext, "${it.latitude} ${it.longitude}", Toast.LENGTH_SHORT).show()
-            }
-        }
 
     }
 
