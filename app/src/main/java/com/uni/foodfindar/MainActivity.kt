@@ -1,5 +1,7 @@
 package com.uni.foodfindar
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -20,8 +22,23 @@ import com.google.gson.Gson
 import java.lang.Exception
 import kotlin.concurrent.thread
 
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var setting:Button
+    lateinit var menu:Button
+    lateinit var search:Button
+
+
+
 
     val coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
     var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
@@ -32,6 +49,27 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setting = findViewById(R.id.settings)
+        menu = findViewById(R.id.menu)
+        search = findViewById(R.id.search)
+
+
+
+        setting.setOnClickListener{
+
+            val intent = Intent(this, Settings::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
+        }
+
+        menu.setOnClickListener{
+            val intent = Intent(this, Menu::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+        }
+
+
 
         tryOverpasser()
         getLocation()
