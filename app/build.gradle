@@ -7,14 +7,13 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-
     defaultConfig {
         applicationId "com.uni.foodfindar"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,8 +35,15 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.google.android.gms:play-services-location:18.0.0' //for location data
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
+    implementation 'org.osmdroid:osmdroid-android:6.1.10' //for map data
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'de.westnordost:osmapi-overpass:2.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.android.volley:volley:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.+'
@@ -45,4 +51,15 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     android.defaultConfig.vectorDrawables.useSupportLibrary = true
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+}
+
+configurations {
+    // already included in Android
+    all*.exclude group: 'net.sf.kxml', module: 'kxml2'
+
+    // @NonNull etc annotations are also already included in Android
+    cleanedAnnotations
+    compile.exclude group: 'org.jetbrains', module:'annotations'
+    compile.exclude group: 'com.intellij', module:'annotations'
+    compile.exclude group: 'org.intellij', module:'annotations'
 }

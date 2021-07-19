@@ -1,4 +1,4 @@
-package com.uni.foodfindar
+package com.uni.foodfindar.views
 
 import android.app.Application
 
