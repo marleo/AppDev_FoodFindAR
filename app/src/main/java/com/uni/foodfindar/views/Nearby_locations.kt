@@ -1,8 +1,12 @@
 package com.uni.foodfindar.views
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +17,7 @@ import java.io.Serializable
 class Nearby_locations : AppCompatActivity() {
     private lateinit var location: RecyclerView
     private lateinit var locationAdapter: LocationRecyclerAdapter
+    private lateinit var locationWebsite: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +26,9 @@ class Nearby_locations : AppCompatActivity() {
         setContentView(R.layout.activity_nearby_locations)
         initRecyclerView()
         addDataSet(list)
+
+
+
     }
 
     private fun addDataSet(list: List<Places>){
@@ -39,4 +47,5 @@ class Nearby_locations : AppCompatActivity() {
             adapter = locationAdapter
         }
     }
+
 }
