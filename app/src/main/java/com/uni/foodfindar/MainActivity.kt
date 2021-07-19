@@ -16,7 +16,8 @@ import com.google.android.gms.location.LocationServices
 class MainActivity : AppCompatActivity() {
 
     lateinit var setting:Button
-    lateinit var nearby:Button
+    lateinit var menu:Button
+    lateinit var search:Button
 
 
 
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setting = findViewById(R.id.settings)
-        nearby = findViewById(R.id.nearby)
+        menu = findViewById(R.id.menu)
+        search = findViewById(R.id.search)
 
 
 
@@ -36,7 +38,11 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
 
-
+        menu.setOnClickListener{
+            val intent = Intent(this, Menu::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+        }
 
 
     }
