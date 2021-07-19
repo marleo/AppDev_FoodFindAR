@@ -50,8 +50,6 @@
         android:id="@+id/button"
         android:layout_width="105dp"
         android:layout_height="39dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginRight="120dp"
         android:background="@drawable/rounded_corners2"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center"
@@ -62,24 +60,9 @@
         android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.822"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.464" />
-
-    <ImageView
-        android:id="@+id/menuFilter"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/menu_filter" />
+        app:layout_constraintVertical_bias="0.469" />
 
     <ImageView
         android:id="@+id/settingFilter"

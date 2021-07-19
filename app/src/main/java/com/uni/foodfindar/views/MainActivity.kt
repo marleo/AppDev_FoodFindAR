@@ -25,6 +25,7 @@ import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.Serializable
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sqrt
@@ -35,8 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var cont : Context
     private lateinit var setting:Button
-    private lateinit var menu:Button
-    private lateinit var search:Button
+    private lateinit var nearby:Button
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
     private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
@@ -57,8 +57,7 @@ class MainActivity : AppCompatActivity() {
         cont = this
 
         setting = findViewById(R.id.settings)
-        menu = findViewById(R.id.menu)
-        search = findViewById(R.id.search)
+        nearby = findViewById(R.id.nearby_button)
 
         setting.setOnClickListener{
 
@@ -67,11 +66,19 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
 
-        menu.setOnClickListener{
-            val intent = Intent(this, Menu::class.java)
+        nearby.isEnabled = false
+        nearby.alpha = .5f
+
+
+
+        nearby.setOnClickListener{
+            val intent = Intent(this, Nearby_locations::class.java)
+            intent.putExtra("list", sortedPlacesObject as Serializable)
             startActivity(intent)
-            overridePendingTransition(0, 0)
         }
+
+
+
 
         getLocation()
     }
@@ -147,6 +154,9 @@ class MainActivity : AppCompatActivity() {
 
                         Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
 
+                        nearby.isEnabled = true
+                        nearby.alpha = 1F
+
                         debugPlaces() //must be deleted later
                     },
                     { e ->
@@ -204,3 +214,5 @@ class MainActivity : AppCompatActivity() {
     } //Must be deleted later
 
 }
+
+

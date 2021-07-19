@@ -1,6 +1,9 @@
 package com.uni.foodfindar
 
-class Places(
+import kotlinx.serialization.Serializable
+
+@Serializable
+class Places (
     val name : String,
     val address : String?,
     val lat : Double?,
