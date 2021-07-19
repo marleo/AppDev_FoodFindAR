@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         nearby.setOnClickListener{
             val intent = Intent(this, Nearby_locations::class.java)
-            intent.putExtra("list", sortedPlacesObject as Serializable)
+            intent.putExtra("list", placesList)
             startActivity(intent)
         }
 
@@ -155,11 +155,11 @@ class MainActivity : AppCompatActivity() {
                         nearby.alpha = 1F
 
                         //////////////////////TODO: CHANGE HERE/////////////////////////////////
-                        val intent = Intent(cont, Help::class.java)
-                        val bundle = Bundle()
-                        bundle.putParcelableArrayList("placesList", placesList)
-                        intent.putExtras(bundle)
-                        startActivity(intent)
+                        //val intent = Intent(cont, Help::class.java)
+                        //val bundle = Bundle()
+                        //bundle.putParcelableArrayList("placesList", placesList)
+                        //intent.putExtras(bundle)
+                        //startActivity(intent)
 
                         /* TODO: Retrieve:
                         val bundle = intent.extras
