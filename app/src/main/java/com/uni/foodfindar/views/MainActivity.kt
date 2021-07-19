@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
         coordinates = "($bbLatMin,$bbLonMin,$bbLatMax,$bbLonMax)"
     }
 
-    fun distance(lat1 : Double, lon1 : Double, lat2 : Double, lon2 : Double) : Double {
+    private fun distance(lat1 : Double, lon1 : Double, lat2 : Double, lon2 : Double) : Double {
         val p = 0.017453292519943295;    // Math.PI / 180
         val a = 0.5 - cos((lat2 - lat1) * p)/2 +
                 cos(lat1 * p) * cos(lat2 * p) *
