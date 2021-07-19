@@ -25,6 +25,7 @@ import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.io.Serializable
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sqrt
@@ -35,8 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var cont : Context
     private lateinit var setting:Button
-    private lateinit var menu:Button
-    private lateinit var search:Button
+    private lateinit var nearby:Button
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
     private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private var bbLonMax : Double? = 0.0
     private var bbLatMax : Double? = 0.0
 
-    private lateinit var sortedPlacesObject : List<Places>
+    private lateinit var placesList : ArrayList<Places>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +57,7 @@ class MainActivity : AppCompatActivity() {
         cont = this
 
         setting = findViewById(R.id.settings)
-        menu = findViewById(R.id.menu)
-        search = findViewById(R.id.search)
+        nearby = findViewById(R.id.nearby_button)
 
         setting.setOnClickListener{
 
@@ -67,10 +66,15 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
 
-        menu.setOnClickListener{
-            val intent = Intent(this, Menu::class.java)
+        nearby.isEnabled = false
+        nearby.alpha = .5f
+
+
+
+        nearby.setOnClickListener{
+            val intent = Intent(this, Nearby_locations::class.java)
+            intent.putExtra("list", placesList)
             startActivity(intent)
-            overridePendingTransition(0, 0)
         }
 
         getLocation()
@@ -104,7 +108,7 @@ class MainActivity : AppCompatActivity() {
             val job = launch {
                 val queue = Volley.newRequestQueue(cont)
                 val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
-                val placesObject = ArrayList<Places>()
+                placesList = ArrayList<Places>()
 
                 val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                     { res ->
@@ -118,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                             if (tag?.name != "" && tag?.name != null && tag.amenity == "restaurant") {
                                 if(element.lat != null && element.lon != null){
                                     if(tag.housenumber != null) {
-                                        placesObject.add(
+                                        placesList.add(
                                             Places(
                                                 tag.name,
                                                 "" + tag.street + " " + tag.housenumber,
@@ -129,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                                             )
                                         )
                                     } else {
-                                        placesObject.add(
+                                        placesList.add(
                                             Places(
                                                 tag.name,
                                                 tag.street,
@@ -143,9 +147,24 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                        sortedPlacesObject = placesObject.sortedWith(compareBy { it.distance })
+                        placesList.sortBy { it.distance }
 
                         Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
+
+                        nearby.isEnabled = true
+                        nearby.alpha = 1F
+
+                        //////////////////////TODO: CHANGE HERE/////////////////////////////////
+                        //val intent = Intent(cont, Help::class.java)
+                        //val bundle = Bundle()
+                        //bundle.putParcelableArrayList("placesList", placesList)
+                        //intent.putExtras(bundle)
+                        //startActivity(intent)
+
+                        /* TODO: Retrieve:
+                        val bundle = intent.extras
+                        list = (bundle?.getParcelableArrayList<Places>("list") as List<Places>)
+                         */
 
                         debugPlaces() //must be deleted later
                     },
@@ -195,7 +214,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun debugPlaces(){
         Log.i("Place", "Debugging Places..")
-        for(places in sortedPlacesObject){
+        for(places in placesList){
             Log.i(
                 "Place",
                 "${places.name} || ${places.address} || Lat: ${places.lat} || Lon: ${places.lon} || ${places.website} || ${places.distance}km"
@@ -204,3 +223,5 @@ class MainActivity : AppCompatActivity() {
     } //Must be deleted later
 
 }
+
+
