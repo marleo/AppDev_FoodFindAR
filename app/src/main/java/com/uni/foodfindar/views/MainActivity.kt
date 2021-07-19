@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private var bbLonMax : Double? = 0.0
     private var bbLatMax : Double? = 0.0
 
-    private lateinit var sortedPlacesObject : List<Places>
+    private lateinit var placesList : ArrayList<Places>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
             val job = launch {
                 val queue = Volley.newRequestQueue(cont)
                 val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
-                val placesObject = ArrayList<Places>()
+                placesList = ArrayList<Places>()
 
                 val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                     { res ->
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                             if (tag?.name != "" && tag?.name != null && tag.amenity == "restaurant") {
                                 if(element.lat != null && element.lon != null){
                                     if(tag.housenumber != null) {
-                                        placesObject.add(
+                                        placesList.add(
                                             Places(
                                                 tag.name,
                                                 "" + tag.street + " " + tag.housenumber,
@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                                             )
                                         )
                                     } else {
-                                        placesObject.add(
+                                        placesList.add(
                                             Places(
                                                 tag.name,
                                                 tag.street,
@@ -143,9 +143,21 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                        sortedPlacesObject = placesObject.sortedWith(compareBy { it.distance })
+                        placesList.sortBy { it.distance }
 
                         Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
+
+                        //////////////////////TODO: CHANGE HERE/////////////////////////////////
+                        val intent = Intent(cont, Help::class.java)
+                        val bundle = Bundle()
+                        bundle.putParcelableArrayList("placesList", placesList)
+                        intent.putExtras(bundle)
+                        startActivity(intent)
+
+                        /* TODO: Retrieve:
+                        val bundle = intent.extras
+                        list = (bundle?.getParcelableArrayList<Places>("list") as List<Places>)
+                         */
 
                         debugPlaces() //must be deleted later
                     },
@@ -195,7 +207,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun debugPlaces(){
         Log.i("Place", "Debugging Places..")
-        for(places in sortedPlacesObject){
+        for(places in placesList){
             Log.i(
                 "Place",
                 "${places.name} || ${places.address} || Lat: ${places.lat} || Lon: ${places.lon} || ${places.website} || ${places.distance}km"
