@@ -9,5 +9,7 @@ class TopSpacingitemDecoration (private val padding: Int): RecyclerView.ItemDeco
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
         outRect.top = padding
+        outRect.left = padding
+        outRect.right = padding
     }
 }

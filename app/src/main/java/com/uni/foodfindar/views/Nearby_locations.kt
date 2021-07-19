@@ -16,14 +16,16 @@ class Nearby_locations : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val bundle = intent.extras
+        val list = (bundle?.getParcelableArrayList<Places>("placesList") as List<Places>)
         setContentView(R.layout.activity_nearby_locations)
         initRecyclerView()
-        addDataSet()
+        addDataSet(list)
     }
 
-    private fun addDataSet(){
-        val data = intent.getSerializableExtra("list") as ArrayList<Places>
-        locationAdapter.submitList(data)
+    private fun addDataSet(list: List<Places>){
+        locationAdapter.submitList(list)
+
     }
 
     private fun initRecyclerView(){
