@@ -13,10 +13,9 @@ import com.uni.foodfindar.R
 
 class Settings : AppCompatActivity() {
     lateinit var setting: Button
-    lateinit var location: Button
     lateinit var filter: Button
     lateinit var help: Button
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -31,7 +30,6 @@ class Settings : AppCompatActivity() {
         filter = findViewById(R.id.filter)
         help = findViewById(R.id.help)
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         setting.setOnClickListener{
             finish()

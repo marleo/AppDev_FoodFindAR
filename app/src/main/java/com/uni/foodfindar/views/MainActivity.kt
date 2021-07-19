@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var cont : Context
     private lateinit var setting:Button
-    private lateinit var menu:Button
-    private lateinit var search:Button
+    private lateinit var nearby:Button
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
     private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
@@ -57,8 +56,7 @@ class MainActivity : AppCompatActivity() {
         cont = this
 
         setting = findViewById(R.id.settings)
-        menu = findViewById(R.id.menu)
-        search = findViewById(R.id.search)
+        nearby = findViewById(R.id.nearby_button)
 
         setting.setOnClickListener{
 
@@ -67,11 +65,12 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
 
-        menu.setOnClickListener{
-            val intent = Intent(this, Menu::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-        }
+        nearby.isEnabled = false
+        nearby.alpha = .5f
+
+
+
+
 
         getLocation()
     }
@@ -147,17 +146,17 @@ class MainActivity : AppCompatActivity() {
 
                         Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
 
-                        //////////////////////TODO: CHANGE HERE/////////////////////////////////
-                        val intent = Intent(cont, Help::class.java)
-                        val bundle = Bundle()
-                        bundle.putParcelableArrayList("placesList", placesList)
-                        intent.putExtras(bundle)
-                        startActivity(intent)
+                        nearby.isEnabled = true
+                        nearby.alpha = 1F
 
-                        /* TODO: Retrieve:
-                        val bundle = intent.extras
-                        list = (bundle?.getParcelableArrayList<Places>("list") as List<Places>)
-                         */
+                        nearby.setOnClickListener{
+
+                            val intent = Intent(cont, Nearby_locations::class.java)
+                            val bundle = Bundle()
+                            bundle.putParcelableArrayList("placesList", placesList)
+                            intent.putExtras(bundle)
+                            startActivity(intent)
+                        }
 
                         debugPlaces() //must be deleted later
                     },
@@ -216,3 +215,5 @@ class MainActivity : AppCompatActivity() {
     } //Must be deleted later
 
 }
+
+
