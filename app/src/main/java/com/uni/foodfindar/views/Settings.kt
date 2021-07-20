@@ -13,7 +13,6 @@ import com.uni.foodfindar.R
 
 class Settings : AppCompatActivity() {
     lateinit var setting: Button
-    lateinit var filter: Button
     lateinit var help: Button
 
 
@@ -27,7 +26,6 @@ class Settings : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         setting = findViewById(R.id.settings)
-        filter = findViewById(R.id.filter)
         help = findViewById(R.id.help)
 
 
@@ -36,9 +34,6 @@ class Settings : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
 
-        filter.setOnClickListener{
-            showDialog()
-        }
 
         help.setOnClickListener{
             val intent = Intent(this, Help::class.java)
@@ -49,39 +44,10 @@ class Settings : AppCompatActivity() {
 
     }
 
-    private fun showDialog(){
-        lateinit var dialog:AlertDialog
-
-        val arrayLocations = arrayOf("Cafe","Restaurant", "Bar")
-        val arrayChecked = ArrayList<Int>()
-
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose your Preferences!")
-
-        builder.setMultiChoiceItems(arrayLocations, null) { dialog, which, isChecked ->
-
-            if(isChecked){
-                arrayChecked.add(which)
-            } else if (arrayChecked.contains(which)){
-                arrayChecked.remove(Integer.valueOf(which))
-            }
 
 
-        }
 
-        builder.setPositiveButton("OK"){ _, _ ->
-            Toast.makeText(applicationContext, "Auswahl wurde übernommen!", Toast.LENGTH_SHORT).show()
-        }
 
-        builder.setNegativeButton("Cancel"){_, _ ->
-            dialog.dismiss()
-        }
-
-        dialog = builder.create()
-
-        dialog.show()
-
-        }
     }
 
 

@@ -56,19 +56,20 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="315dp"
-        android:layout_height="73dp"
+        android:layout_width="316dp"
+        android:layout_height="67dp"
         android:background="#3C9F5996"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center|top"
-        android:text="FoodFindAR ist eine App, um Restaurants, Bars und Cafes in ihrer Nähe zu finden. Sie können entweder nach einem bestimmten Lokal suchen oder sich Restaurants und mehr in der direkten Umgebung anzeigen lassen. "
+        android:text="FoodFindAR ist eine App, um Restaurants, Bars und Cafes in ihrer Nähe zu finden. Sie können sich Restaurants und mehr in der direkten Umgebung anzeigen lassen. "
         android:textColor="#D8FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.233" />
+        app:layout_constraintVertical_bias="0.246" />
 
     <ImageView
         android:id="@+id/imageView4"
