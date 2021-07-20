@@ -27,8 +27,6 @@ import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sqrt
@@ -37,25 +35,25 @@ import kotlin.math.sqrt
 class MainActivity : AppCompatActivity() {
 
 
-    private lateinit var cont : Context
-    private lateinit var setting:Button
-    private lateinit var nearby:Button
+    private lateinit var cont: Context
+    private lateinit var setting: Button
+    private lateinit var nearby: Button
     private lateinit var filter: Button
-    private var restaurant = "restaurant"
-    private var cafe = ""
-    private var bar = ""
+    private var restaurant : Boolean = false
+    private var cafe : Boolean = false
+    private var bar : Boolean = false
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
-    private var amenity: String = "[\"amenity\"~\"$restaurant\"$cafe$bar]" //Amenity can be extended with e.g. restaurant|cafe etc.
+    private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
     private var bbSize = 0.0175
-    private var userPosLon : Double? = 0.0
-    private var userPosLat : Double? = 0.0
-    private var bbLonMin : Double? = 0.0
-    private var bbLatMin : Double? = 0.0
-    private var bbLonMax : Double? = 0.0
-    private var bbLatMax : Double? = 0.0
+    private var userPosLon: Double? = 0.0
+    private var userPosLat: Double? = 0.0
+    private var bbLonMin: Double? = 0.0
+    private var bbLatMin: Double? = 0.0
+    private var bbLonMax: Double? = 0.0
+    private var bbLatMax: Double? = 0.0
 
-    private lateinit var placesList : ArrayList<Places>
+    private lateinit var placesList: ArrayList<Places>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,21 +65,19 @@ class MainActivity : AppCompatActivity() {
         nearby = findViewById(R.id.nearby_button)
         filter = findViewById(R.id.filter)
 
-        setting.setOnClickListener{
+        setting.setOnClickListener {
 
             val intent = Intent(this, Settings::class.java)
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
 
-
-
         nearby.isEnabled = false
         filter.isEnabled = false
         filter.alpha = .5f
         nearby.alpha = .5f
 
-        filter.setOnClickListener{
+        filter.setOnClickListener {
 
             val builder = AlertDialog.Builder(cont)
 
@@ -89,48 +85,34 @@ class MainActivity : AppCompatActivity() {
 
             val checkedFilterArray = booleanArrayOf(true, false, false)
 
-
-
             builder.setTitle("Select your preferences!")
 
-            builder.setMultiChoiceItems(filterArray, checkedFilterArray){ _: DialogInterface, which: Int, isChecked: Boolean ->
+            builder.setMultiChoiceItems(filterArray, checkedFilterArray) { _: DialogInterface, which: Int, isChecked: Boolean ->
 
                 checkedFilterArray[which] = isChecked
 
 
             }
-            builder.setPositiveButton("OK"){ _:DialogInterface, _: Int ->
+            builder.setPositiveButton("OK") { _: DialogInterface, _: Int ->
                 Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
-
-                cafe = if (checkedFilterArray[1]){
-                    "|\"cafe\""
-                } else{
-                    ""
-                }
-                bar = if (checkedFilterArray[2]){
-                    "|\"bar\""
-                } else{
-                    ""
-                }
-                Toast.makeText(this, "$restaurant$cafe$bar", Toast.LENGTH_SHORT).show()
+                restaurant = checkedFilterArray[0]
+                cafe = checkedFilterArray[1]
+                bar = checkedFilterArray[2]
 
                 nearby.isEnabled = false
                 nearby.alpha = .5F
                 filter.isEnabled = false
                 filter.alpha = .5f
 
+                amenityStringbuilder(restaurant, cafe, bar)
                 getLocation()
             }
-            builder.setNeutralButton("Cancel"){ dialog: DialogInterface, _: Int, ->
+            builder.setNeutralButton("Cancel") { dialog: DialogInterface, _: Int ->
                 dialog.dismiss()
             }
             val dialog = builder.create()
             dialog.show()
         }
-
-
-
-
 
         getLocation()
     }
@@ -160,43 +142,45 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun tryOverpasser() = runBlocking {
-            val job = launch {
-                val queue = Volley.newRequestQueue(cont)
-                val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
-                placesList = ArrayList<Places>()
+        val job = launch {
+            val queue = Volley.newRequestQueue(cont)
+            val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
+            placesList = ArrayList<Places>()
 
-                val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+            val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                     { res ->
                         val responseObject = Gson().fromJson(
-                            res.toString(),
-                            ApiResponse::class.java
+                                res.toString(),
+                                ApiResponse::class.java
                         )
 
                         for (element in responseObject.elements!!) {
                             val tag = element.tags
-                            if (tag?.name != "" && tag?.name != null && tag.amenity == "restaurant") {
-                                if(element.lat != null && element.lon != null){
-                                    if(tag.housenumber != null) {
+                            if (tag?.name != "" && tag?.name != null && tag.amenity == "restaurant" || tag?.amenity == "cafe" || tag?.amenity == "bar") {
+                                if (element.lat != null && element.lon != null) {
+                                    if (tag.housenumber != null) {
                                         placesList.add(
-                                            Places(
-                                                tag.name,
-                                                "" + tag.street + " " + tag.housenumber,
-                                                element.lat,
-                                                element.lon,
-                                                tag.website,
-                                                distance(userPosLat!!, userPosLon!!, element.lat, element.lon)
-                                            )
+                                                Places(
+                                                        tag.name,
+                                                        "" + tag.street + " " + tag.housenumber,
+                                                        tag.amenity,
+                                                        element.lat,
+                                                        element.lon,
+                                                        tag.website,
+                                                        distance(userPosLat!!, userPosLon!!, element.lat, element.lon)
+                                                )
                                         )
                                     } else {
                                         placesList.add(
-                                            Places(
-                                                tag.name,
-                                                tag.street,
-                                                element.lat,
-                                                element.lon,
-                                                tag.website,
-                                                distance(userPosLat!!, userPosLon!!, element.lat, element.lon)
-                                            )
+                                                Places(
+                                                        tag.name,
+                                                        tag.street,
+                                                        tag.amenity,
+                                                        element.lat,
+                                                        element.lon,
+                                                        tag.website,
+                                                        distance(userPosLat!!, userPosLon!!, element.lat, element.lon)
+                                                )
                                         )
                                     }
                                 }
@@ -211,7 +195,7 @@ class MainActivity : AppCompatActivity() {
                         filter.alpha = 1F
                         nearby.alpha = 1F
 
-                        nearby.setOnClickListener{
+                        nearby.setOnClickListener {
 
                             val intent = Intent(cont, Nearby_locations::class.java)
                             val bundle = Bundle()
@@ -219,37 +203,34 @@ class MainActivity : AppCompatActivity() {
                             intent.putExtras(bundle)
                             startActivity(intent)
                         }
-
-
-
                         debugPlaces() //must be deleted later
                     },
                     { e ->
                         Toast.makeText(cont, "Internet connection failed.. Please check your settings", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
-                )
-                queue.add(jsonObjectRequest)
+            )
+            queue.add(jsonObjectRequest)
 
-                jsonObjectRequest.retryPolicy = object : RetryPolicy {
-                    override fun getCurrentTimeout(): Int {
-                        return 50000
-                    }
+            jsonObjectRequest.retryPolicy = object : RetryPolicy {
+                override fun getCurrentTimeout(): Int {
+                    return 50000
+                }
 
-                    override fun getCurrentRetryCount(): Int {
-                        return 50000
-                    }
+                override fun getCurrentRetryCount(): Int {
+                    return 50000
+                }
 
-                    @Throws(VolleyError::class)
-                    override fun retry(error: VolleyError) {
-                    }
+                @Throws(VolleyError::class)
+                override fun retry(error: VolleyError) {
                 }
             }
+        }
         job.join()
 
     }
 
-    private fun setBoundingBox(location : Location?) {
+    private fun setBoundingBox(location: Location?) {
         userPosLat = location?.latitude
         userPosLon = location?.longitude
         bbLatMin = userPosLat?.minus(bbSize)
@@ -260,21 +241,56 @@ class MainActivity : AppCompatActivity() {
         coordinates = "($bbLatMin,$bbLonMin,$bbLatMax,$bbLonMax)"
     }
 
-    private fun distance(lat1 : Double, lon1 : Double, lat2 : Double, lon2 : Double) : Double {
-        val p = 0.017453292519943295;    // Math.PI / 180
-        val a = 0.5 - cos((lat2 - lat1) * p)/2 +
+    private fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val p = 0.017453292519943295    // Math.PI / 180
+        val a = 0.5 - cos((lat2 - lat1) * p) / 2 +
                 cos(lat1 * p) * cos(lat2 * p) *
-                (1 - cos((lon2 - lon1) * p))/2;
+                (1 - cos((lon2 - lon1) * p)) / 2
 
-        return 12742 * asin(sqrt(a)); // 2 * R; R = 6371 km
+        return 12742 * asin(sqrt(a)) // 2 * R; R = 6371 km
     }
 
-    private fun debugPlaces(){
+    private fun amenityStringbuilder(restaurant: Boolean, cafe: Boolean, bar: Boolean) {
+        amenity = "[\"amenity\"~\""
+        val suffix = "\"]"
+        val restaurantString = "restaurant"
+        val cafeString = "cafe"
+        val barString = "bar"
+
+        if(restaurant){
+            amenity += restaurantString
+            if(cafe){
+                amenity += "|$cafeString"
+            }
+            if(bar){
+                amenity += "|$barString"
+            }
+        } else if(cafe){
+            amenity += cafeString
+            if(restaurant){
+                amenity += "|$restaurantString"
+            }
+            if(bar){
+                amenity += "|$barString"
+            }
+        } else if(bar){
+            amenity += barString
+            if(cafe){
+                amenity += "|$cafeString"
+            }
+            if(restaurant){
+                amenity += "|$restaurantString"
+            }
+        }
+        amenity += suffix
+    }
+
+    private fun debugPlaces() {
         Log.i("Place", "Debugging Places..")
-        for(places in placesList){
+        for (places in placesList) {
             Log.i(
-                "Place",
-                "${places.name} || ${places.address} || Lat: ${places.lat} || Lon: ${places.lon} || ${places.website} || ${places.distance}km"
+                    "Place",
+                    "${places.name} || ${places.address} || ${places.amenity} || Lat: ${places.lat} || Lon: ${places.lon} || ${places.website} || ${places.distance}km"
             )
         }
     } //Must be deleted later
