@@ -1,21 +1,13 @@
 package com.uni.foodfindar.views
 
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
-import android.provider.ContactsContract
-import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
 import kotlinx.android.synthetic.main.nearby_list_item.*
-import java.io.Serializable
 
 class Nearby_locations : AppCompatActivity() {
     private lateinit var location: RecyclerView
@@ -29,13 +21,10 @@ class Nearby_locations : AppCompatActivity() {
         setContentView(R.layout.activity_nearby_locations)
         initRecyclerView()
         addDataSet(list)
-
-
-
     }
 
     private fun addDataSet(list: List<Places>){
-        locationAdapter.submitList(list)
+        locationAdapter.submitList(list, this)
 
     }
 
@@ -44,8 +33,6 @@ class Nearby_locations : AppCompatActivity() {
 
         location.apply {
             layoutManager = LinearLayoutManager(this@Nearby_locations)
-            //val topSpacingitemDecoration = TopSpacingitemDecoration(30)
-            //addItemDecoration(topSpacingitemDecoration)
             locationAdapter = LocationRecyclerAdapter()
             adapter = locationAdapter
         }
