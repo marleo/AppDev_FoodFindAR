@@ -3,6 +3,7 @@ package com.uni.foodfindar.views
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,8 +64,12 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             locationDistanceString = (location.distance?.times(1000)?.toInt()).toString() + "m"
             locationDistance.text = locationDistanceString
 
-            if (location.website != null){
+            if(location.website != null && location.website != "null") { //weird code
+                Log.i("Websites", "" + location.name + " " + location.website)
                 locationWebsite.visibility = View.VISIBLE
+            }
+            if(location.website == null){
+                locationWebsite.visibility = View.INVISIBLE
             }
 
             locationWebsite.setOnClickListener{

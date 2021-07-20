@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
     private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
-    private var bbSize = 0.0175
+    private var bbSize = 0.035
     private var userPosLon: Double? = 0.0
     private var userPosLat: Double? = 0.0
     private var bbLonMin: Double? = 0.0
