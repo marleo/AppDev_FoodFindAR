@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodfindar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.Nearby_locations"></activity>
+        <activity android:name=".views.Nearby_locations" />
         <activity android:name=".activity_map" />
         <activity android:name=".views.MainActivity" />
         <activity android:name=".views.Help" />
