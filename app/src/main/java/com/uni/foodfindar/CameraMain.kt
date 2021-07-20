@@ -1,4 +1,4 @@
-package com.uni.foodfindar.CameraView
+package com.uni.foodfindar
 
 import android.Manifest
 import android.content.ContentValues
@@ -11,13 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 
 
 class CameraMain : AppCompatActivity(){
-
-   val destination = 9.14;
    private val PERMISSION_CODE: Int = 1000
+
 
 
    override fun onCreate(savedInstanceState: Bundle?){
       super.onCreate(savedInstanceState)
+      setContentView(R.layout.camera_main)
 
       if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
          if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
