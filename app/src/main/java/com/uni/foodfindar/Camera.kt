@@ -57,4 +57,8 @@ class Camera: AppCompatActivity() {
             }
         }
     }
+
+    private fun changeDirection(){
+        //TODO change imageView to go to the correct location
+    }
 }
