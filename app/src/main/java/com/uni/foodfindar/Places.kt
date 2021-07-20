@@ -9,6 +9,8 @@ class Places(
         val name: String?,
         @SerializedName("address")
         val address: String?,
+        @SerializedName("amenity")
+        val amenity: String?,
         @SerializedName("lat")
         val lat: Double?,
         @SerializedName("lon")
@@ -21,6 +23,7 @@ class Places(
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
+            parcel.readString(),
             parcel.readValue(Double::class.java.classLoader) as? Double,
             parcel.readValue(Double::class.java.classLoader) as? Double,
             parcel.readString(),
@@ -30,6 +33,7 @@ class Places(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeString(address)
+        parcel.writeString(amenity)
         parcel.writeValue(lat)
         parcel.writeValue(lon)
         parcel.writeString(website)

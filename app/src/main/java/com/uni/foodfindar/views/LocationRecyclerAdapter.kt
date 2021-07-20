@@ -42,13 +42,13 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
         private val locationName: TextView = itemView.findViewById(R.id.location_name)
         private val locationDistance: TextView = itemView.findViewById(R.id.location_distance)
-        private var location_distance: Double = 1000.0
+        private var locationDistanceString: String = ""
         private var locationWebsite: ImageView = itemView.findViewById(R.id.website)
 
         fun bind(location: Places){
             locationName.text = location.name
-            location_distance *= location.distance!!
-            locationDistance.text = location_distance.toInt().toString() + " m"
+            locationDistanceString = (location.distance?.times(1000)?.toInt()).toString() + "m"
+            locationDistance.text = locationDistanceString
             if (location.website != null){
                 locationWebsite.visibility = View.VISIBLE
                 }
