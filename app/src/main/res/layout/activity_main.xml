@@ -7,6 +7,27 @@
     android:background="@drawable/gradient"
     tools:context=".views.MainActivity">
 
+    <Button
+        android:id="@+id/filter"
+        android:layout_width="80dp"
+        android:layout_height="37dp"
+        android:fontFamily="@font/ropa_sans"
+        android:text="Filter"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#E8FFFFFF"
+        android:textSize="15sp"
+        android:typeface="sans"
+        app:backgroundTint="#E96B3D98"
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.55"
+        app:strokeColor="#070000"
+        app:strokeWidth="1dp" />
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -37,34 +58,6 @@
         app:layout_constraintVertical_bias="0.462"
         app:strokeColor="#070000"
         app:strokeWidth="1dp" />
-
-    <ImageView
-        android:id="@+id/line"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.526"
-        android:src="@drawable/line" />
-
-    <TextView
-        android:id="@+id/searchHistory"
-        android:layout_width="120dp"
-        android:layout_height="25dp"
-        android:fontFamily="@font/ropa_sans"
-        android:gravity="center"
-        android:text="Search History"
-        android:textColor="#EEE9E9"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.558" />
 
     <Button
         android:id="@+id/settings"

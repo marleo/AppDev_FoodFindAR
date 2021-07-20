@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
+import kotlinx.android.synthetic.main.nearby_list_item.*
 import java.io.Serializable
 
 class Nearby_locations : AppCompatActivity() {

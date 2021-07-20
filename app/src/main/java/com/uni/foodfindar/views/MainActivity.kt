@@ -3,6 +3,7 @@ package com.uni.foodfindar.views
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.android.volley.Request
@@ -25,6 +27,8 @@ import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sqrt
@@ -36,6 +40,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cont : Context
     private lateinit var setting:Button
     private lateinit var nearby:Button
+    private lateinit var filter: Button
+    private var restaurant = "restaurant|"
+    private var cafe = ""
+    private var bar = ""
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
     private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
@@ -57,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         setting = findViewById(R.id.settings)
         nearby = findViewById(R.id.nearby_button)
+        filter = findViewById(R.id.filter)
 
         setting.setOnClickListener{
 
@@ -65,8 +74,64 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
 
+
+
         nearby.isEnabled = false
+        filter.isEnabled = false
+        filter.alpha = .5f
         nearby.alpha = .5f
+
+        filter.setOnClickListener{
+
+            val builder = AlertDialog.Builder(cont)
+
+            val filterArray = arrayOf("Restaurant", "Cafe", "Bar")
+
+            val checkedFilterArray = booleanArrayOf(true, false, false)
+
+
+
+            builder.setTitle("Select your preferences!")
+
+            builder.setMultiChoiceItems(filterArray, checkedFilterArray){ _: DialogInterface, which: Int, isChecked: Boolean ->
+
+                checkedFilterArray[which] = isChecked
+
+
+            }
+            builder.setPositiveButton("OK"){ _:DialogInterface, _: Int ->
+                Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
+
+                restaurant = if (checkedFilterArray[0]){
+                    "restaurant|"
+                } else{
+                    ""
+                }
+
+                cafe = if (checkedFilterArray[1]){
+                    "cafe|"
+                } else{
+                    ""
+                }
+                bar = if (checkedFilterArray[2]){
+                    "bar"
+                } else{
+                    ""
+                }
+
+                nearby.isEnabled = false
+                nearby.alpha = .5F
+                filter.isEnabled = false
+                filter.alpha = .5f
+
+                tryOverpasser()
+            }
+            builder.setNeutralButton("Cancel"){ dialog: DialogInterface, _: Int, ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }
 
 
 
@@ -147,6 +212,8 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
 
                         nearby.isEnabled = true
+                        filter.isEnabled = true
+                        filter.alpha = 1F
                         nearby.alpha = 1F
 
                         nearby.setOnClickListener{
@@ -157,6 +224,8 @@ class MainActivity : AppCompatActivity() {
                             intent.putExtras(bundle)
                             startActivity(intent)
                         }
+
+
 
                         debugPlaces() //must be deleted later
                     },
@@ -182,6 +251,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         job.join()
+
     }
 
     private fun setBoundingBox(location : Location?) {
