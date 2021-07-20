@@ -41,11 +41,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var setting:Button
     private lateinit var nearby:Button
     private lateinit var filter: Button
-    private var restaurant = "restaurant|"
+    private var restaurant = "restaurant"
     private var cafe = ""
     private var bar = ""
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
-    private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
+    private var amenity: String = "[\"amenity\"~\"$restaurant\"|\"$cafe\"$bar\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
     private var bbSize = 0.0175
     private var userPosLon : Double? = 0.0
@@ -102,14 +102,8 @@ class MainActivity : AppCompatActivity() {
             builder.setPositiveButton("OK"){ _:DialogInterface, _: Int ->
                 Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
 
-                restaurant = if (checkedFilterArray[0]){
-                    "restaurant|"
-                } else{
-                    ""
-                }
-
                 cafe = if (checkedFilterArray[1]){
-                    "cafe|"
+                    "cafe"
                 } else{
                     ""
                 }
@@ -118,13 +112,14 @@ class MainActivity : AppCompatActivity() {
                 } else{
                     ""
                 }
+                Toast.makeText(this, "$restaurant$cafe$bar", Toast.LENGTH_SHORT).show()
 
                 nearby.isEnabled = false
                 nearby.alpha = .5F
                 filter.isEnabled = false
                 filter.alpha = .5f
 
-                tryOverpasser()
+                getLocation()
             }
             builder.setNeutralButton("Cancel"){ dialog: DialogInterface, _: Int, ->
                 dialog.dismiss()
