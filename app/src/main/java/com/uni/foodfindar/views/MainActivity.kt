@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     private var cafe = ""
     private var bar = ""
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
-    private var amenity: String = "[\"amenity\"~\"$restaurant\"|\"$cafe\"$bar\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
+    private var amenity: String = "[\"amenity\"~\"$restaurant\"$cafe$bar]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
     private var bbSize = 0.0175
     private var userPosLon : Double? = 0.0
@@ -103,12 +103,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
 
                 cafe = if (checkedFilterArray[1]){
-                    "cafe"
+                    "|\"cafe\""
                 } else{
                     ""
                 }
                 bar = if (checkedFilterArray[2]){
-                    "bar"
+                    "|\"bar\""
                 } else{
                     ""
                 }
