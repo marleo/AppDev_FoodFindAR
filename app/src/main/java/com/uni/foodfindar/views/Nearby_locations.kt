@@ -44,8 +44,8 @@ class Nearby_locations : AppCompatActivity() {
 
         location.apply {
             layoutManager = LinearLayoutManager(this@Nearby_locations)
-            val topSpacingitemDecoration = TopSpacingitemDecoration(30)
-            addItemDecoration(topSpacingitemDecoration)
+            //val topSpacingitemDecoration = TopSpacingitemDecoration(30)
+            //addItemDecoration(topSpacingitemDecoration)
             locationAdapter = LocationRecyclerAdapter()
             adapter = locationAdapter
         }

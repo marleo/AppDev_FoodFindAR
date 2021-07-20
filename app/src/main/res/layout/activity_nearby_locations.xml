@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context=".views.Nearby_locations">
+    tools:context=".views.Nearby_locations"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nearby_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="192dp"
-        tools:layout_editor_absoluteY="163dp" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
