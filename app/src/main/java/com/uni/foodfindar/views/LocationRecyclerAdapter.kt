@@ -77,7 +77,6 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             itemView.setOnClickListener {
                 Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
                 //TODO: Intent to new activity
-                startActivity(cont, Intent(cont, activity_map::class.java), null)
             }
             }
         }
