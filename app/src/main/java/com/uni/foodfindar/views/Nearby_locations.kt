@@ -1,7 +1,7 @@
 package com.uni.foodfindar.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
@@ -21,12 +21,12 @@ class Nearby_locations : AppCompatActivity() {
         addDataSet(list)
     }
 
-    private fun addDataSet(list: List<Places>){
+    private fun addDataSet(list: List<Places>) {
         locationAdapter.submitList(list, this)
 
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         location = findViewById(R.id.nearby_list)
 
         location.apply {

@@ -1,13 +1,9 @@
 package com.uni.foodfindar.views
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.slider.Slider
 import com.uni.foodfindar.R
 
@@ -21,7 +17,7 @@ class Settings : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(0,0)
+        overridePendingTransition(0, 0)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,25 +33,21 @@ class Settings : AppCompatActivity() {
         filter.alpha = .5F
 
 
-        setting.setOnClickListener{
+        setting.setOnClickListener {
             finish()
             overridePendingTransition(0, 0)
         }
 
 
-        help.setOnClickListener{
+        help.setOnClickListener {
             val intent = Intent(this, Help::class.java)
             startActivity(intent)
         }
 
 
-
     }
 
 
-
-
-
-    }
+}
 
 
