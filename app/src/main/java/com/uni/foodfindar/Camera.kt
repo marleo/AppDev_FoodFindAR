@@ -3,14 +3,18 @@ package com.uni.foodfindar
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class Camera: AppCompatActivity() {
     private val PERMISSION_CODE: Int = 1000
+    private val directionToGo: Int = -1
+    //WENN NACH LINKS DANN 0, GERADE AUS 1, 0 ANFANG, 4 ZIEL ... BZW. SÜDEN NORDEN.
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +41,7 @@ class Camera: AppCompatActivity() {
     private fun openCamera() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "YOUR WAY TO GO")
+        changeDirection()
     }
 
     override fun onRequestPermissionsResult(
@@ -58,7 +63,21 @@ class Camera: AppCompatActivity() {
         }
     }
 
+    //WHAT KIND OF IMAGES SHOULD BE USED?
     private fun changeDirection(){
         //TODO change imageView to go to the correct location
+        val direction = findViewById<ImageView>(R.id.direction)
+
+        if(directionToGo == 0){
+            //direction.setImageResource(R.id.new_image);
+        } else if(directionToGo == 1){
+            //direction.setImageResource(R.id.new_image);
+        }else if(directionToGo == 2){
+            //direction.setImageResource(R.id.new_image);
+        }else if(directionToGo == 3){
+            //direction.setImageResource(R.id.new_image);
+        }else if(directionToGo == 4){
+            //direction.setImageResource(R.id.new_image);
+        }
     }
 }
