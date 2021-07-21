@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var filter: Button
     private lateinit var slider: Slider
 
-    private var sliderDistance = 1.0
 
     private var restaurant : Boolean = false
     private var cafe : Boolean = false
@@ -55,9 +54,12 @@ class MainActivity : AppCompatActivity() {
     private var cafeFilter = false
     private var barFilter = false
 
+
+
     private var checkedFilterArray = booleanArrayOf(restaurantFilter, cafeFilter, barFilter)
 
-    private var bbSize = 0.0175.times(sliderDistance)
+
+    private var bbSize = 0.014
     private var userPosLon: Double? = 0.0
     private var userPosLat: Double? = 0.0
     private var bbLonMin: Double? = 0.0
@@ -96,10 +98,15 @@ class MainActivity : AppCompatActivity() {
 
             val builder = AlertDialog.Builder(cont)
 
+
+
             val filterArray = arrayOf("Restaurant", "Cafe", "Bar")
 
 
+
+
             builder.setTitle("Select your preferences!")
+
 
             builder.setMultiChoiceItems(filterArray, checkedFilterArray) { _: DialogInterface, which: Int, isChecked: Boolean ->
 
@@ -107,6 +114,7 @@ class MainActivity : AppCompatActivity() {
 
 
             }
+
             builder.setPositiveButton("OK") { _: DialogInterface, _: Int ->
                 Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
                 restaurant = checkedFilterArray[0]
@@ -128,23 +136,16 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             val dialog = builder.create()
+
             dialog.show()
         }
         slider.addOnSliderTouchListener(object: Slider.OnSliderTouchListener{
             override fun onStartTrackingTouch(slider: Slider) {
-                slider.addOnChangeListener{_,_,_ ->
-                    when(slider.value){
-                        1.0f -> sliderDistance = 0.6
-                        2.0f -> sliderDistance = 1.0
-                        3.0f -> sliderDistance = 1.55
-                        4.0f -> sliderDistance = 2.6
-                    }
-                    bbSize = 0.0175.times(sliderDistance)
 
-                }
             }
 
             override fun onStopTrackingTouch(slider: Slider) {
+
                 Toast.makeText(cont, "$bbSize", Toast.LENGTH_SHORT).show()
                 slider.isEnabled = false
                 filter.isEnabled = false
@@ -154,7 +155,18 @@ class MainActivity : AppCompatActivity() {
                 filter.alpha = .5F
                 getLocation()
             }
+
         })
+        slider.addOnChangeListener{_,_,_ ->
+            when(slider.value){
+                1.0f -> bbSize = 0.008
+                2.0f -> bbSize = 0.01225
+                3.0f -> bbSize = 0.014
+                4.0f -> bbSize = 0.0175
+            }
+
+
+        }
 
 
         getLocation()
