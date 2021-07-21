@@ -125,7 +125,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(slider: Slider) {
-                Toast.makeText(cont, "$bbSize", Toast.LENGTH_SHORT).show()
             }
 
         })
