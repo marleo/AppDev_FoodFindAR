@@ -6,7 +6,7 @@
     android:layout_height="60dp"
     android:layout_margin="5dp"
     android:layout_marginTop="0dp"
-    app:cardBackgroundColor="#441C8E"
+    app:cardBackgroundColor="#451113"
     app:cardCornerRadius="15dp"
     app:cardElevation="10dp"
     app:cardPreventCornerOverlap="false">
@@ -42,7 +42,7 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/location_name"
-            app:layout_constraintHorizontal_bias="0.888"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.641"
