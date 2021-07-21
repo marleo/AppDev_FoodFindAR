@@ -2,17 +2,15 @@ package com.uni.foodfindar.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
-import kotlinx.android.synthetic.main.nearby_list_item.*
 
 class Nearby_locations : AppCompatActivity() {
     private lateinit var location: RecyclerView
     private lateinit var locationAdapter: LocationRecyclerAdapter
-    private lateinit var locationWebsite: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
