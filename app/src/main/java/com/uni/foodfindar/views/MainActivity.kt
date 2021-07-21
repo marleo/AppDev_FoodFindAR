@@ -45,6 +45,13 @@ class MainActivity : AppCompatActivity() {
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
     private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
 
+
+    private var restaurantFilter = false
+    private var cafeFilter = false
+    private var barFilter = false
+
+    private var checkedFilterArray = booleanArrayOf(restaurantFilter, cafeFilter, barFilter)
+
     private var bbSize = 0.035
     private var userPosLon: Double? = 0.0
     private var userPosLat: Double? = 0.0
@@ -83,7 +90,6 @@ class MainActivity : AppCompatActivity() {
 
             val filterArray = arrayOf("Restaurant", "Cafe", "Bar")
 
-            val checkedFilterArray = booleanArrayOf(true, false, false)
 
             builder.setTitle("Select your preferences!")
 
