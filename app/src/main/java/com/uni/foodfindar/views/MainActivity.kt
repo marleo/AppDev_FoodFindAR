@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
+import com.google.android.material.slider.Slider
 import com.google.gson.Gson
 import com.uni.foodfindar.ApiResponse
 import com.uni.foodfindar.Places
@@ -39,6 +40,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var setting: Button
     private lateinit var nearby: Button
     private lateinit var filter: Button
+    private lateinit var slider: Slider
+
+    private var sliderDistance = 1.0
+
     private var restaurant : Boolean = false
     private var cafe : Boolean = false
     private var bar : Boolean = false
@@ -52,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private var checkedFilterArray = booleanArrayOf(restaurantFilter, cafeFilter, barFilter)
 
-    private var bbSize = 0.035
+    private var bbSize = 0.0175.times(sliderDistance)
     private var userPosLon: Double? = 0.0
     private var userPosLat: Double? = 0.0
     private var bbLonMin: Double? = 0.0
@@ -71,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         setting = findViewById(R.id.settings)
         nearby = findViewById(R.id.nearby_button)
         filter = findViewById(R.id.filter)
+        slider = findViewById(R.id.distance_slider)
 
         setting.setOnClickListener {
 
@@ -81,8 +87,10 @@ class MainActivity : AppCompatActivity() {
 
         nearby.isEnabled = false
         filter.isEnabled = false
-        filter.alpha = .5f
-        nearby.alpha = .5f
+        slider.isEnabled = false
+        slider.alpha = .5F
+        filter.alpha = .5F
+        nearby.alpha = .5F
 
         filter.setOnClickListener {
 
@@ -108,7 +116,10 @@ class MainActivity : AppCompatActivity() {
                 nearby.isEnabled = false
                 nearby.alpha = .5F
                 filter.isEnabled = false
-                filter.alpha = .5f
+                filter.alpha = .5F
+                slider.isEnabled = false
+                slider.alpha = .5F
+
 
                 amenityStringbuilder(restaurant, cafe, bar)
                 getLocation()
@@ -119,6 +130,32 @@ class MainActivity : AppCompatActivity() {
             val dialog = builder.create()
             dialog.show()
         }
+        slider.addOnSliderTouchListener(object: Slider.OnSliderTouchListener{
+            override fun onStartTrackingTouch(slider: Slider) {
+                slider.addOnChangeListener{_,_,_ ->
+                    when(slider.value){
+                        1.0f -> sliderDistance = 0.6
+                        2.0f -> sliderDistance = 1.0
+                        3.0f -> sliderDistance = 1.55
+                        4.0f -> sliderDistance = 2.6
+                    }
+                    bbSize = 0.0175.times(sliderDistance)
+
+                }
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                Toast.makeText(cont, "$bbSize", Toast.LENGTH_SHORT).show()
+                slider.isEnabled = false
+                filter.isEnabled = false
+                nearby.isEnabled = false
+                slider.alpha = .5F
+                nearby.alpha = .5F
+                filter.alpha = .5F
+                getLocation()
+            }
+        })
+
 
         getLocation()
     }
@@ -198,6 +235,8 @@ class MainActivity : AppCompatActivity() {
 
                         nearby.isEnabled = true
                         filter.isEnabled = true
+                        slider.isEnabled = true
+                        slider.alpha = 1F
                         filter.alpha = 1F
                         nearby.alpha = 1F
 
@@ -209,6 +248,8 @@ class MainActivity : AppCompatActivity() {
                             intent.putExtras(bundle)
                             startActivity(intent)
                         }
+
+
                         debugPlaces() //must be deleted later
                     },
                     { e ->
