@@ -2,20 +2,25 @@ package com.uni.foodfindar.views
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
+import android.app.usage.UsageEvents
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.webkit.WebView
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RetryPolicy
 import com.android.volley.VolleyError
@@ -44,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var filter: Button
     private lateinit var slider: Slider
     private lateinit var appKey: String
+    private lateinit var logo: ImageView
 
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
 
@@ -52,6 +58,9 @@ class MainActivity : AppCompatActivity() {
     private var barFilter = false
 
     private var checkedFilterArray = booleanArrayOf(restaurantFilter, cafeFilter, barFilter)
+
+    private var logoClicked = 0
+
 
     private var bbSize = 0.0175
     private var userPosLon: Double? = 0.0
@@ -62,7 +71,6 @@ class MainActivity : AppCompatActivity() {
     private var bbLatMax: Double? = 0.0
 
     private lateinit var pref: SharedPreferences
-
     private lateinit var placesList: ArrayList<Places>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         nearby = findViewById(R.id.nearby_button)
         filter = findViewById(R.id.filter)
         slider = findViewById(R.id.distance_slider)
+        logo = findViewById(R.id.logo)
         appKey = resources.getString(R.string.preferences_key)
 
         createPreferences()
@@ -86,6 +95,18 @@ class MainActivity : AppCompatActivity() {
             overridePendingTransition(0, 0)
         }
         disableUI()
+
+        logo.setOnClickListener{
+                logoClicked++
+
+            if(logoClicked == 5){
+                logoClicked = 0
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
+                startActivity(i)
+            }
+
+        }
 
 
         filter.setOnClickListener {

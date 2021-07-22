@@ -20,7 +20,7 @@
         <activity android:name=".activity_map" />
         <activity android:name=".views.MainActivity" />
         <activity android:name=".views.Help" />
-        <activity android:name=".views.Settings" />
+        <activity android:name=".views.Settings" android:theme = "@style/Theme.Transparent" />
         <activity
             android:name=".views.SplashScreen"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">

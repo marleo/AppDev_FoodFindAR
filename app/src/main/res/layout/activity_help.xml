@@ -90,4 +90,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
         app:srcCompat="@drawable/line" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="24dp"
+        android:background="#22C52F63"
+        android:backgroundTint="@color/button_tint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/abc_vector_test" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
