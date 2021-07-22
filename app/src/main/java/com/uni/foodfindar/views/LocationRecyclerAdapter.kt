@@ -173,17 +173,18 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             locationName.text = location.name
             locationDistanceString = (location.distance?.times(1000)?.toInt()).toString() + "m"
             locationDistance.text = locationDistanceString
+            var url: String? = null
 
             if (location.website != null && location.website != "null") { //weird code
                 Log.i("Websites", "" + location.name + " " + location.website)
                 locationWebsite.visibility = View.VISIBLE
+                url = prepareLink(location.website)
             }
             if (location.website == null) {
                 locationWebsite.visibility = View.INVISIBLE
             }
 
             locationWebsite.setOnClickListener {
-                val url = location.website
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(url)
                 startActivity(cont, i, null)
@@ -193,6 +194,14 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
                 //TODO: Intent to new activity
             }
+        }
+
+        private fun prepareLink(url: String?): String?{
+            val pattern: String = "^(http|https|ftp)://.*$"
+            return if(url?.matches(Regex(pattern)) == true)
+                url
+            else
+                "https://$url"
         }
     }
 
@@ -210,17 +219,18 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             locationName.text = location.name
             locationDistanceString = (location.distance?.times(1000)?.toInt()).toString() + "m"
             locationDistance.text = locationDistanceString
+            var url: String? = null
 
             if (location.website != null && location.website != "null") { //weird code
                 Log.i("Websites", "" + location.name + " " + location.website)
                 locationWebsite.visibility = View.VISIBLE
+                url = prepareLink(location.website)
             }
             if (location.website == null) {
                 locationWebsite.visibility = View.INVISIBLE
             }
 
             locationWebsite.setOnClickListener {
-                val url = location.website
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(url)
                 startActivity(cont, i, null)
@@ -230,6 +240,14 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
                 //TODO: Intent to new activity
             }
+        }
+
+        private fun prepareLink(url: String?): String?{
+            val pattern: String = "^(http|https|ftp)://.*$"
+            return if(url?.matches(Regex(pattern)) == true)
+                url
+            else
+                "https://$url"
         }
     }
 
@@ -247,17 +265,18 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             locationName.text = location.name
             locationDistanceString = (location.distance?.times(1000)?.toInt()).toString() + "m"
             locationDistance.text = locationDistanceString
+            var url: String? = null
 
             if (location.website != null && location.website != "null") { //weird code
                 Log.i("Websites", "" + location.name + " " + location.website)
                 locationWebsite.visibility = View.VISIBLE
+                url = prepareLink(location.website)
             }
             if (location.website == null) {
                 locationWebsite.visibility = View.INVISIBLE
             }
 
             locationWebsite.setOnClickListener {
-                val url = location.website
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(url)
                 startActivity(cont, i, null)
@@ -268,8 +287,15 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 //TODO: Intent to new activity
             }
         }
-    }
 
+        private fun prepareLink(url: String?): String?{
+            val pattern: String = "^(http|https|ftp)://.*$"
+            return if(url?.matches(Regex(pattern)) == true)
+                url
+            else
+                "https://$url"
+        }
+    }
     class EmptyViewHolder constructor(itemView: View, context: Context) : RecyclerView.ViewHolder(itemView)
 }
 

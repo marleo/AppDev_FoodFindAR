@@ -11,4 +11,9 @@
 
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorControlNormal">@color/gradientTop</item>   <!-- normal border color  -->
+        <item name="colorControlActivated">@color/gradientBottom</item> <!-- activated color  -->
+        <item name="android:textColor">@color/black</item> <!-- text color -->
+    </style>
 </resources>

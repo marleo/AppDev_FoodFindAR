@@ -2,25 +2,24 @@ package com.uni.foodfindar.views
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
-import android.app.usage.UsageEvents
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.BlendMode
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.webkit.WebView
+import android.view.Gravity
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RetryPolicy
 import com.android.volley.VolleyError
@@ -29,6 +28,7 @@ import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 import com.google.android.material.slider.Slider
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.uni.foodfindar.ApiResponse
 import com.uni.foodfindar.Places
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
         filter.setOnClickListener {
 
-            val builder = AlertDialog.Builder(cont)
+            val builder = AlertDialog.Builder(cont, R.style.MyCheckBox)
             val filterArray = arrayOf("Restaurant", "Cafe", "Bar")
             builder.setTitle("Select your preferences!")
             builder.setMultiChoiceItems(filterArray, checkedFilterArray) { _: DialogInterface, which: Int, isChecked: Boolean ->
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             builder.setPositiveButton("OK") { _: DialogInterface, _: Int ->
-                Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
+                showSnackbar("Selection confirmed", Snackbar.LENGTH_SHORT)
                 val edit = pref.edit()
 
                 edit.putBoolean("restaurant", checkedFilterArray[0])
@@ -263,8 +263,6 @@ class MainActivity : AppCompatActivity() {
                         }
                         placesList.sortBy { it.distance }
 
-                        Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
-
                         enableUI()
 
                         nearby.setOnClickListener {
@@ -278,7 +276,7 @@ class MainActivity : AppCompatActivity() {
                         debugPlaces() //must be deleted later
                     },
                     { e ->
-                        Toast.makeText(cont, "Internet connection failed.. Please check your settings", Toast.LENGTH_SHORT).show()
+                        showSnackbar("Error. Check Internet/Location settings and restart!", -2)
                         e.printStackTrace()
                     }
             )
@@ -302,6 +300,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun enableUI() {
+        showSnackbar("Locations fetched successfully!", Snackbar.LENGTH_SHORT)
         nearby.isEnabled = true
         filter.isEnabled = true
         slider.isEnabled = true
@@ -311,6 +310,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun disableUI() {
+        showSnackbar("Fetching Locations...", Snackbar.LENGTH_INDEFINITE)
         slider.isEnabled = false
         filter.isEnabled = false
         nearby.isEnabled = false
@@ -353,6 +353,18 @@ class MainActivity : AppCompatActivity() {
         editPref.putBoolean("sliderPos4", false)
 
         editPref.apply()
+    }
+
+    private fun showSnackbar(message: String, length: Int){
+        val snack = Snackbar.make(findViewById(android.R.id.content), message, length)
+        val view = snack.view
+        val snackTextView: TextView = view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+        snackTextView.gravity = Gravity.CENTER_HORIZONTAL
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            snackTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        }
+        view.setBackgroundColor(1571)
+        snack.show()
     }
 
     private fun debugPlaces() {
