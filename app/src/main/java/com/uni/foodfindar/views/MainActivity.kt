@@ -2,18 +2,25 @@ package com.uni.foodfindar.views
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
+import android.app.usage.UsageEvents
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.webkit.WebView
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RetryPolicy
 import com.android.volley.VolleyError
@@ -21,6 +28,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
+import com.google.android.material.slider.Slider
 import com.google.gson.Gson
 import com.uni.foodfindar.ApiResponse
 import com.uni.foodfindar.Places
@@ -39,13 +47,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var setting: Button
     private lateinit var nearby: Button
     private lateinit var filter: Button
-    private var restaurant : Boolean = false
-    private var cafe : Boolean = false
-    private var bar : Boolean = false
-    private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
-    private var amenity: String = "[\"amenity\"~\"restaurant\"]" //Amenity can be extended with e.g. restaurant|cafe etc.
+    private lateinit var slider: Slider
+    private lateinit var appKey: String
+    private lateinit var logo: ImageView
 
-    private var bbSize = 0.035
+    private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
+
+    private var restaurantFilter = true
+    private var cafeFilter = false
+    private var barFilter = false
+
+    private var checkedFilterArray = booleanArrayOf(restaurantFilter, cafeFilter, barFilter)
+
+    private var logoClicked = 0
+
+
+    private var bbSize = 0.0175
     private var userPosLon: Double? = 0.0
     private var userPosLat: Double? = 0.0
     private var bbLonMin: Double? = 0.0
@@ -53,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     private var bbLonMax: Double? = 0.0
     private var bbLatMax: Double? = 0.0
 
+    private lateinit var pref: SharedPreferences
     private lateinit var placesList: ArrayList<Places>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +82,11 @@ class MainActivity : AppCompatActivity() {
         setting = findViewById(R.id.settings)
         nearby = findViewById(R.id.nearby_button)
         filter = findViewById(R.id.filter)
+        slider = findViewById(R.id.distance_slider)
+        logo = findViewById(R.id.logo)
+        appKey = resources.getString(R.string.preferences_key)
+
+        createPreferences()
 
         setting.setOnClickListener {
 
@@ -71,49 +94,100 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
+        disableUI()
 
-        nearby.isEnabled = false
-        filter.isEnabled = false
-        filter.alpha = .5f
-        nearby.alpha = .5f
+        logo.setOnClickListener{
+                logoClicked++
+
+            if(logoClicked == 5){
+                logoClicked = 0
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
+                startActivity(i)
+            }
+
+        }
+
 
         filter.setOnClickListener {
 
             val builder = AlertDialog.Builder(cont)
-
             val filterArray = arrayOf("Restaurant", "Cafe", "Bar")
-
-            val checkedFilterArray = booleanArrayOf(true, false, false)
-
             builder.setTitle("Select your preferences!")
-
             builder.setMultiChoiceItems(filterArray, checkedFilterArray) { _: DialogInterface, which: Int, isChecked: Boolean ->
-
                 checkedFilterArray[which] = isChecked
-
-
             }
+
             builder.setPositiveButton("OK") { _: DialogInterface, _: Int ->
                 Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
-                restaurant = checkedFilterArray[0]
-                cafe = checkedFilterArray[1]
-                bar = checkedFilterArray[2]
+                val edit = pref.edit()
 
-                nearby.isEnabled = false
-                nearby.alpha = .5F
-                filter.isEnabled = false
-                filter.alpha = .5f
+                edit.putBoolean("restaurant", checkedFilterArray[0])
+                edit.putBoolean("cafe", checkedFilterArray[1])
+                edit.putBoolean("bar", checkedFilterArray[2])
 
-                amenityStringbuilder(restaurant, cafe, bar)
-                getLocation()
+                edit.apply()
+
+                restaurantFilter = checkedFilterArray[0]
+                cafeFilter = checkedFilterArray[1]
+                barFilter = checkedFilterArray[2]
             }
             builder.setNeutralButton("Cancel") { dialog: DialogInterface, _: Int ->
                 dialog.dismiss()
             }
             val dialog = builder.create()
+
             dialog.show()
         }
 
+        slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+            }
+
+        })
+        slider.addOnChangeListener { _, _, _ ->
+
+            val edit = pref.edit()
+
+            when (slider.value) {
+                1.0f -> {
+                    edit.putBoolean("sliderPos1", true)
+                    edit.putBoolean("sliderPos2", false)
+                    edit.putBoolean("sliderPos3", false)
+                    edit.putBoolean("sliderPos4", false)
+
+                    edit.apply()
+                }
+                2.0f -> {
+                    edit.putBoolean("sliderPos1", false)
+                    edit.putBoolean("sliderPos2", true)
+                    edit.putBoolean("sliderPos3", false)
+                    edit.putBoolean("sliderPos4", false)
+
+                    edit.apply()
+                }
+                3.0f -> {
+                    edit.putBoolean("sliderPos1", false)
+                    edit.putBoolean("sliderPos2", false)
+                    edit.putBoolean("sliderPos3", true)
+                    edit.putBoolean("sliderPos4", false)
+
+                    edit.apply()
+                }
+                4.0f -> {
+                    edit.putBoolean("sliderPos1", false)
+                    edit.putBoolean("sliderPos2", false)
+                    edit.putBoolean("sliderPos3", false)
+                    edit.putBoolean("sliderPos4", true)
+
+                    edit.apply()
+                }
+            }
+        }
         getLocation()
     }
 
@@ -144,11 +218,12 @@ class MainActivity : AppCompatActivity() {
     private fun tryOverpasser() = runBlocking {
         val job = launch {
             val queue = Volley.newRequestQueue(cont)
-            val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node$amenity$coordinates;way$amenity$coordinates;relation$amenity$coordinates;);out body;>;out skel;" //building the link for requests
-            placesList = ArrayList<Places>()
+            val url = "http://overpass-api.de/api/interpreter?data=[out:json];(node[\"amenity\"~\"restaurant|bar|cafe\"]$coordinates;way[\"amenity\"~\"restaurant|bar|cafe\"]$coordinates;relation[\"amenity\"~\"restaurant|bar|cafe\"]$coordinates;);out body;>;out skel;" //building the link for requests
 
             val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
                     { res ->
+                        placesList = ArrayList<Places>()
+
                         val responseObject = Gson().fromJson(
                                 res.toString(),
                                 ApiResponse::class.java
@@ -190,10 +265,7 @@ class MainActivity : AppCompatActivity() {
 
                         Toast.makeText(cont, "Locations fetched successfully!", Toast.LENGTH_SHORT).show()
 
-                        nearby.isEnabled = true
-                        filter.isEnabled = true
-                        filter.alpha = 1F
-                        nearby.alpha = 1F
+                        enableUI()
 
                         nearby.setOnClickListener {
 
@@ -227,7 +299,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
         job.join()
+    }
 
+    private fun enableUI() {
+        nearby.isEnabled = true
+        filter.isEnabled = true
+        slider.isEnabled = true
+        slider.alpha = 1F
+        filter.alpha = 1F
+        nearby.alpha = 1F
+    }
+
+    private fun disableUI() {
+        slider.isEnabled = false
+        filter.isEnabled = false
+        nearby.isEnabled = false
+        slider.alpha = .5F
+        nearby.alpha = .5F
+        filter.alpha = .5F
     }
 
     private fun setBoundingBox(location: Location?) {
@@ -250,39 +339,20 @@ class MainActivity : AppCompatActivity() {
         return 12742 * asin(sqrt(a)) // 2 * R; R = 6371 km
     }
 
-    private fun amenityStringbuilder(restaurant: Boolean, cafe: Boolean, bar: Boolean) {
-        amenity = "[\"amenity\"~\""
-        val suffix = "\"]"
-        val restaurantString = "restaurant"
-        val cafeString = "cafe"
-        val barString = "bar"
+    private fun createPreferences() {
+        pref = getSharedPreferences(appKey, 0)
+        val editPref = pref.edit()
 
-        if(restaurant){
-            amenity += restaurantString
-            if(cafe){
-                amenity += "|$cafeString"
-            }
-            if(bar){
-                amenity += "|$barString"
-            }
-        } else if(cafe){
-            amenity += cafeString
-            if(restaurant){
-                amenity += "|$restaurantString"
-            }
-            if(bar){
-                amenity += "|$barString"
-            }
-        } else if(bar){
-            amenity += barString
-            if(cafe){
-                amenity += "|$cafeString"
-            }
-            if(restaurant){
-                amenity += "|$restaurantString"
-            }
-        }
-        amenity += suffix
+        editPref.putBoolean("restaurant", true)
+        editPref.putBoolean("cafe", false)
+        editPref.putBoolean("bar", false)
+
+        editPref.putBoolean("sliderPos1", false)
+        editPref.putBoolean("sliderPos2", false)
+        editPref.putBoolean("sliderPos3", true)
+        editPref.putBoolean("sliderPos4", false)
+
+        editPref.apply()
     }
 
     private fun debugPlaces() {
@@ -294,7 +364,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
     } //Must be deleted later
-
 }
 
 

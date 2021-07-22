@@ -9,12 +9,12 @@
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="315dp"
-        android:layout_height="73dp"
+        android:layout_width="314dp"
+        android:layout_height="54dp"
         android:background="#3C9F5996"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center|top"
-        android:text="Über Settings -> Filter können Sie ihre persönlichen Präferenzen einstellen, welche Art von Etablissment ihnen angezeigt werden soll (Cafe, Bar, Restaurant). Und jetzt viel Spaß mit der App!"
+        android:text="Click on 'Filter' to set your preferences (restaurant/cafe/bar) and select the distance on the slider below. And now enjoy our app and enjoy your meal!"
         android:textColor="#D8FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +30,7 @@
         android:background="#3C9F5996"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center|top"
-        android:text="Sobald Sie sich für ein Lokal entschieden haben, werden Sie per AR direkt über ihre Kamera dort hin geführt. Eine Zielmarkierung erscheint in der richtigen Richtung und eine Anzeige informiert Sie über die verbleibende Distanz."
+        android:text="As soon as you decide on a location and click on it, you will be navigated to your destination via AR. A placemarker will appear and direct you to the chosen location while the remaining distance is shown at the bottom of the screen."
         android:textColor="#D8FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ropa_sans"
-        android:text="Hilfe"
+        android:text="Help"
         android:textColor="#E4FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +61,7 @@
         android:background="#3C9F5996"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center|top"
-        android:text="FoodFindAR ist eine App, um Restaurants, Bars und Cafes in ihrer Nähe zu finden. Sie können sich Restaurants und mehr in der direkten Umgebung anzeigen lassen. "
+        android:text="FoodFindAR is an app, to find restaurants, cafes and bars near your location. It will show you restaurants and more in your direct surroundings. "
         android:textColor="#D8FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -90,4 +90,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
         app:srcCompat="@drawable/line" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="24dp"
+        android:background="#22C52F63"
+        android:backgroundTint="@color/button_tint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/abc_vector_test" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
