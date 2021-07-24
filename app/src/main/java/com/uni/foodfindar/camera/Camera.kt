@@ -1,16 +1,21 @@
 package com.uni.foodfindar.camera
 
 import android.Manifest
+import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.location.Location
 import android.location.LocationListener
+import android.opengl.Matrix
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Surface
+import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -24,14 +29,32 @@ class Camera: AppCompatActivity(), SensorEventListener, LocationListener {
     private val PERMISSION_CODE: Int = 1000
     private val directionToGo: Int = -1
     //WENN NACH LINKS DANN 0, GERADE AUS 1, 0 ANFANG, 4 ZIEL ... BZW. SÜDEN NORDEN.
+
     val TAG: String? = "ARActivity"
-    private val surfaceView: SurfaceView? = null
+    private var surfaceView: SurfaceView? = null
     private val cameraContainerLayout: FrameLayout? = null
     private val arOverlayView: ViewCamera? = null
-    private val camera: Camera? = null
+    private var camera: Camera? = null
     private val arCamera: Camera? = null
     private val tvCurrentLocation: TextView? = null
     private val tvBearing: TextView? = null
+
+
+    var surfaceHolder: SurfaceHolder? = null
+    var activity: Activity? = null
+
+    var projectionMatrix = FloatArray(16)
+
+    var cameraWidth = 0
+    var cameraHeight = 0
+    private val Z_NEAR = 0.5f
+    private val Z_FAR = 10000f
+
+    fun Camera(context: Context?, surfaceView: SurfaceView?) {
+        this.surfaceView = surfaceView
+        activity = context as Activity?
+        surfaceHolder = this.surfaceView!!.holder
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,4 +132,53 @@ class Camera: AppCompatActivity(), SensorEventListener, LocationListener {
     override fun onLocationChanged(location: Location) {
         TODO("Not yet implemented")
     }
+
+    private fun getCameraOrientation(): Int {
+        val info = android.hardware.Camera.CameraInfo()
+        val rotation = activity!!.windowManager.defaultDisplay.rotation
+        var degrees = 0
+        when (rotation) {
+            Surface.ROTATION_0 -> degrees = 0
+            Surface.ROTATION_90 -> degrees = 90
+            Surface.ROTATION_180 -> degrees = 180
+            Surface.ROTATION_270 -> degrees = 270
+        }
+        var orientation: Int
+        //if (info.facing == Camera.CAMERA_FACING_FRONT) { NOT WORKING
+            orientation = (info.orientation + degrees) % 360
+            orientation = (360 - orientation) % 360
+        //} else {
+            orientation = (info.orientation - degrees + 360) % 360
+        //}
+        return orientation
+    }
+
+
+    fun surfaceDestroyed(holder: SurfaceHolder?) {
+        if (camera != null) {
+            camera = null
+        }
+    }
+
+    private fun generateProjectionMatrix() {
+        var ratio = 0f
+        ratio = if (cameraWidth < cameraHeight) {
+            cameraWidth.toFloat() / cameraHeight
+        } else {
+            cameraHeight.toFloat() / cameraWidth
+        }
+        val OFFSET = 0
+        val LEFT = -ratio
+        val RIGHT = ratio
+        val BOTTOM = -1f
+        val TOP = 1f
+        Matrix.frustumM(projectionMatrix, OFFSET, LEFT, RIGHT, BOTTOM, TOP, Z_NEAR, Z_FAR)
+    }
+
+    @JvmName("getProjectionMatrix1")
+    fun getProjectionMatrix(): FloatArray? {
+        return projectionMatrix
+    }
+
+
 }
