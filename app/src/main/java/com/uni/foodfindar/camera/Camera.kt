@@ -1,20 +1,37 @@
-package com.uni.foodfindar
+package com.uni.foodfindar.camera
 
 import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.location.Location
+import android.location.LocationListener
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.SurfaceView
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.uni.foodfindar.R
 
-class Camera: AppCompatActivity() {
+
+class Camera: AppCompatActivity(), SensorEventListener, LocationListener {
     private val PERMISSION_CODE: Int = 1000
     private val directionToGo: Int = -1
     //WENN NACH LINKS DANN 0, GERADE AUS 1, 0 ANFANG, 4 ZIEL ... BZW. SÜDEN NORDEN.
+    val TAG: String? = "ARActivity"
+    private val surfaceView: SurfaceView? = null
+    private val cameraContainerLayout: FrameLayout? = null
+    private val arOverlayView: ViewCamera? = null
+    private val camera: Camera? = null
+    private val arCamera: Camera? = null
+    private val tvCurrentLocation: TextView? = null
+    private val tvBearing: TextView? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,5 +96,17 @@ class Camera: AppCompatActivity() {
         }else if(directionToGo == 4){
             //direction.setImageResource(R.id.new_image);
         }
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLocationChanged(location: Location) {
+        TODO("Not yet implemented")
     }
 }
