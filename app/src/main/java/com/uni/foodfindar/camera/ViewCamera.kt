@@ -1,31 +1,20 @@
 package com.uni.foodfindar.camera
 
-import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.location.Location
 import android.view.View
 
 
-class ViewCamera : View(null) {
-/*
-    private var context: Context? = null
+class ViewCamera() : View(null) {
+
+    //private val context: Context? = context
     private var rotatedProjectionMatrix = FloatArray(16)
     private var currentLocation: Location? = null
-    private var arPointCameras: List<PointCamera>? = null
+    private var arPoints: List<PointCamera>? = null
 
-
-    fun ViewCamera(context: Context?) {
-        //super(context)
-        this.context = context
-
-        //Demo points
-        arPointCameras = object : ArrayList<PointCamera?>() { //PointCamera?
-            init {
-                add(PointCamera("Sun Wheel", 16.0404856, 108.2262447, 0))
-                add(PointCamera("Linh Ung Pagoda", 16.1072989, 108.2343984, 0))
-            }
-        }
-    }
 
     fun updateRotatedProjectionMatrix(rotatedProjectionMatrix: FloatArray?) {
         this.rotatedProjectionMatrix = rotatedProjectionMatrix!!
@@ -47,7 +36,7 @@ class ViewCamera : View(null) {
         paint.setStyle(Paint.Style.FILL)
         paint.setColor(Color.WHITE)
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL))
-        for (i in arPointCameras!!.indices) {
+        for (i in arPoints!!.indices) {
 
             //TODO GET LOCATION X AND Y
             // cameraCoordinateVector[2] is z, that always less than 0 to display on right position
@@ -56,10 +45,10 @@ class ViewCamera : View(null) {
                 val y: Float =
                     (0.5f - 0)
                 canvas.drawCircle(x, y, radius.toFloat(), paint)
-            arPointCameras!![i].getName()?.let {
+            arPoints!![i].getName()?.let {
                 canvas.drawText(
                     it,
-                    x - 30 * arPointCameras!![i].getName()?.length!! / 2,
+                    x - 30 * arPoints!![i].getName()?.length!! / 2,
                     y - 80,
                     paint
                 )
@@ -67,5 +56,5 @@ class ViewCamera : View(null) {
         }
     }
 
- */
+
 }

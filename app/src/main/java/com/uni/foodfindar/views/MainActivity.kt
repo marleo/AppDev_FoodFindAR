@@ -25,7 +25,7 @@ import com.google.gson.Gson
 import com.uni.foodfindar.ApiResponse
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
-import com.uni.foodfindar.camera.Camera
+import com.uni.foodfindar.camera.ARCamera
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.math.asin
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         var helpButton = findViewById<Button>(R.id.buttonHelp)
 
         helpButton.setOnClickListener{
-            val intent = Intent(this, Camera::class.java)
+            val intent = Intent(this, ARCamera::class.java)
             startActivity(intent)
             overridePendingTransition(0, 0)
         }

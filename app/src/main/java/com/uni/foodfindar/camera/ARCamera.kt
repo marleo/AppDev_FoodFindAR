@@ -25,7 +25,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.uni.foodfindar.R
 
 
-class Camera: AppCompatActivity(), SensorEventListener, LocationListener {
+class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
     private val PERMISSION_CODE: Int = 1000
     private val directionToGo: Int = -1
     //WENN NACH LINKS DANN 0, GERADE AUS 1, 0 ANFANG, 4 ZIEL ... BZW. SÜDEN NORDEN.
@@ -34,8 +34,8 @@ class Camera: AppCompatActivity(), SensorEventListener, LocationListener {
     private var surfaceView: SurfaceView? = null
     private val cameraContainerLayout: FrameLayout? = null
     private val arOverlayView: ViewCamera? = null
-    private var camera: Camera? = null
-    private val arCamera: Camera? = null
+    private var ARCamera: ARCamera? = null
+    private val arARCamera: ARCamera? = null
     private val tvCurrentLocation: TextView? = null
     private val tvBearing: TextView? = null
 
@@ -155,8 +155,8 @@ class Camera: AppCompatActivity(), SensorEventListener, LocationListener {
 
 
     fun surfaceDestroyed(holder: SurfaceHolder?) {
-        if (camera != null) {
-            camera = null
+        if (ARCamera != null) {
+            ARCamera = null
         }
     }
 
