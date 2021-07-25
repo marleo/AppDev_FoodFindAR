@@ -30,15 +30,8 @@ class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
     private val directionToGo: Int = -1
     //WENN NACH LINKS DANN 0, GERADE AUS 1, 0 ANFANG, 4 ZIEL ... BZW. SÜDEN NORDEN.
 
-    val TAG: String? = "ARActivity"
     private var surfaceView: SurfaceView? = null
-    private val cameraContainerLayout: FrameLayout? = null
-    private val arOverlayView: ViewCamera? = null
     private var ARCamera: ARCamera? = null
-    private val arARCamera: ARCamera? = null
-    private val tvCurrentLocation: TextView? = null
-    private val tvBearing: TextView? = null
-
 
     var surfaceHolder: SurfaceHolder? = null
     var activity: Activity? = null
