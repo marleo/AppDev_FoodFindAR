@@ -126,6 +126,7 @@ class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
         TODO("Not yet implemented")
     }
 
+    /*
     private fun getCameraOrientation(): Int {
         val info = android.hardware.Camera.CameraInfo()
         val rotation = activity!!.windowManager.defaultDisplay.rotation
@@ -168,10 +169,6 @@ class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
         Matrix.frustumM(projectionMatrix, OFFSET, LEFT, RIGHT, BOTTOM, TOP, Z_NEAR, Z_FAR)
     }
 
-    @JvmName("getProjectionMatrix1")
-    fun getProjectionMatrix(): FloatArray? {
-        return projectionMatrix
-    }
-
+     */
 
 }

@@ -26,6 +26,8 @@ class ViewCamera() : View(null) {
         this.invalidate()
     }
 
+
+    //NEED THE DATA!!!!
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (currentLocation == null) {
