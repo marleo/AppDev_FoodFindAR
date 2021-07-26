@@ -1,14 +1,16 @@
 package com.uni.foodfindar.camera
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.location.Location
+import android.opengl.Matrix
 import android.view.View
 
 
-class ViewCamera() : View(null) {
+class ViewCamera(context: Context?) : View(context) {
 
     //private val context: Context? = context
     private var rotatedProjectionMatrix = FloatArray(16)
@@ -29,28 +31,39 @@ class ViewCamera() : View(null) {
 
     //NEED THE DATA!!!!
     override fun onDraw(canvas: Canvas) {
+
         super.onDraw(canvas)
         if (currentLocation == null) {
             return
         }
         val radius = 30
         val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.setStyle(Paint.Style.FILL)
-        paint.setColor(Color.WHITE)
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL))
+        paint.style = Paint.Style.FILL
+        paint.color = Color.WHITE
+        paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+        paint.textSize = 60f
+
         for (i in arPoints!!.indices) {
 
-            //TODO GET LOCATION X AND Y
+            val currentLocationInECEF: FloatArray? = LocationHelper.WSG84toECEF(currentLocation!!)
+            val pointInECEF: FloatArray = LocationHelper.WSG84toECEF(arPoints!![i].getLocation()!!)!!
+            val pointInENU: FloatArray =
+                LocationHelper.ECEFtoENU(currentLocation!!, currentLocationInECEF!!, pointInECEF)!!
+            val cameraCoordinateVector = FloatArray(4)
+            Matrix.multiplyMV(cameraCoordinateVector, 0, rotatedProjectionMatrix,
+                0, pointInENU, 0)
+
             // cameraCoordinateVector[2] is z, that always less than 0 to display on right position
             // if z > 0, the point will display on the opposite
-                val x: Float = 0f
-                val y: Float =
-                    (0.5f - 0)
+            if (cameraCoordinateVector[2] < 0) {
+                val x =
+                    (0.5f + cameraCoordinateVector[0] / cameraCoordinateVector[3]) * canvas.width
+                val y =
+                    (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * canvas.height
                 canvas.drawCircle(x, y, radius.toFloat(), paint)
-            arPoints!![i].getName()?.let {
                 canvas.drawText(
-                    it,
-                    x - 30 * arPoints!![i].getName()?.length!! / 2,
+                    arPoints!![i].getName()!!,
+                    x - 30 * arPoints!![i].getName()!!.length / 2,
                     y - 80,
                     paint
                 )

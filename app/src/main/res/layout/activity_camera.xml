@@ -13,17 +13,9 @@
         <SurfaceView
             android:id="@+id/surface_view"
             android:layout_width="match_parent"
-            android:layout_height="493dp" />
+            android:layout_height="606dp" />
     </FrameLayout>
 
-
-    <ImageView
-    android:id="@+id/camera"
-    android:layout_width="match_parent"
-    android:layout_height="602dp"
-    android:layout_alignParentBottom="true"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginBottom="129dp" />
 
     <TextView
         android:id="@+id/tv_bearing"

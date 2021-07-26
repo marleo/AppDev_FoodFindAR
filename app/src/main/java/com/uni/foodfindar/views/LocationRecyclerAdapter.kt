@@ -78,7 +78,7 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
                 Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
                 //TODO: Intent to new activity
             }
-            }
         }
     }
+}
 
