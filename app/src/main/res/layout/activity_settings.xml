@@ -11,43 +11,41 @@
 
     <ImageView
         android:id="@+id/settingFilter"
-        android:layout_width="133dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_width="125dp"
+        android:layout_height="93dp"
         android:adjustViewBounds="false"
         android:baselineAlignBottom="false"
         android:clickable="false"
         android:filterTouchesWhenObscured="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.982"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01"
-        app:srcCompat="@drawable/setting_background" />
+        app:layout_constraintVertical_bias="0.009"
+        app:srcCompat="@drawable/rounded_corners3" />
 
     <Button
         android:id="@+id/help"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="120dp"
-        android:layout_height="32dp"
+        android:layout_width="112dp"
+        android:layout_height="30dp"
         android:background="#00FFFFFF"
         android:backgroundTint="@color/button_tint"
         android:fontFamily="@font/ropa_sans"
         android:text="Help"
         android:textColor="#C9FFFFFF"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:backgroundTint="@color/button_tint"
         app:backgroundTintMode="add"
         app:iconPadding="8dp"
         app:iconTint="@color/button_tint"
         app:layout_constraintBottom_toBottomOf="@+id/settingFilter"
         app:layout_constraintEnd_toEndOf="@+id/settingFilter"
-        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintStart_toStartOf="@+id/settingFilter"
         app:layout_constraintTop_toTopOf="@+id/settingFilter"
-        app:layout_constraintVertical_bias="0.491"
+        app:layout_constraintVertical_bias="0.761"
         app:rippleColor="#00FFFFFF" />
 
     <ImageView
