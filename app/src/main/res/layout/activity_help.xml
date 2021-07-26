@@ -52,12 +52,12 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.098" />
+        app:layout_constraintVertical_bias="0.039" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="316dp"
-        android:layout_height="67dp"
+        android:layout_width="337dp"
+        android:layout_height="80dp"
         android:background="#00AF85AA"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center|top"

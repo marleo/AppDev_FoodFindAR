@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var slider: Slider
     private lateinit var appKey: String
     private lateinit var logo: ImageView
+    private lateinit var retry: ImageButton
 
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
 
@@ -85,8 +87,12 @@ class MainActivity : AppCompatActivity() {
         slider = findViewById(R.id.distance_slider)
         logo = findViewById(R.id.logo)
         appKey = resources.getString(R.string.preferences_key)
+        retry = findViewById(R.id.retry)
 
         createPreferences()
+
+
+        disableUI()
 
         setting.setOnClickListener {
 
@@ -94,7 +100,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
-        disableUI()
+
+        retry.setOnClickListener{
+            disableUI()
+            getLocation()
+        }
 
         logo.setOnClickListener{
                 logoClicked++
@@ -304,6 +314,8 @@ class MainActivity : AppCompatActivity() {
         nearby.isEnabled = true
         filter.isEnabled = true
         slider.isEnabled = true
+        retry.isEnabled = true
+        retry.alpha = 1F
         slider.alpha = 1F
         filter.alpha = 1F
         nearby.alpha = 1F
@@ -314,6 +326,8 @@ class MainActivity : AppCompatActivity() {
         slider.isEnabled = false
         filter.isEnabled = false
         nearby.isEnabled = false
+        retry.isEnabled = false
+        retry.alpha = .5F
         slider.alpha = .5F
         nearby.alpha = .5F
         filter.alpha = .5F
