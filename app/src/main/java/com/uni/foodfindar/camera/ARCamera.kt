@@ -1,39 +1,23 @@
 package com.uni.foodfindar.camera
 
-import android.Manifest
 import android.app.Activity
-import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageManager
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.location.Location
-import android.location.LocationListener
+import android.hardware.*
 import android.opengl.Matrix
-import android.os.Build
-import android.os.Bundle
-import android.provider.MediaStore
-import android.view.Surface
-import android.view.SurfaceHolder
-import android.view.SurfaceView
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.uni.foodfindar.R
+import android.util.Log
+import android.view.*
+import java.io.IOException
 
 
-class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
-    private val PERMISSION_CODE: Int = 1000
-    private val directionToGo: Int = -1
-    //WENN NACH LINKS DANN 0, GERADE AUS 1, 0 ANFANG, 4 ZIEL ... BZW. SÜDEN NORDEN.
+class ARCamera : SurfaceHolder.Callback, ViewGroup(null) {
+    private val TAG = "ARCamera"
 
-    private var surfaceView: SurfaceView? = null
-    private var ARCamera: ARCamera? = null
-
+    var surfaceView: SurfaceView? = null
     var surfaceHolder: SurfaceHolder? = null
+    var previewSize: Camera.Size? = null
+    var supportedPreviewSizes: List<Camera.Size>? = null
+    var camera: Camera? = null
+    var parameters: Camera.Parameters? = null
     var activity: Activity? = null
 
     var projectionMatrix = FloatArray(16)
@@ -43,93 +27,86 @@ class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
     private val Z_NEAR = 0.5f
     private val Z_FAR = 10000f
 
-    fun Camera(context: Context?, surfaceView: SurfaceView?) {
+    fun ARCamera(context: Context?, surfaceView: SurfaceView?) {
         this.surfaceView = surfaceView
         activity = context as Activity?
         surfaceHolder = this.surfaceView!!.holder
+        surfaceHolder?.addCallback(this)
+        surfaceHolder?.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS)
+    }
+
+    @JvmName("setCamera1")
+    fun setCamera(camera: Camera?) {
+        this.camera = camera
+        if (this.camera != null) {
+            supportedPreviewSizes = this.camera!!.parameters.supportedPreviewSizes
+            requestLayout()
+            val params = this.camera!!.parameters
+            val focusModes = params.supportedFocusModes
+            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                params.focusMode = Camera.Parameters.FOCUS_MODE_AUTO
+                this.camera!!.parameters = params
+            }
+        }
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
+    protected override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec)
+        val height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec)
+        setMeasuredDimension(width, height)
+        if (supportedPreviewSizes != null) {
+            previewSize = getOptimalPreviewSize(supportedPreviewSizes!!, width, height)
+        }
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
-                //Permission was not given
-                val permission = arrayOf(Manifest.permission.CAMERA)
-                //Show pop up to ask for permission
-                requestPermissions(permission, PERMISSION_CODE)
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        if (changed && childCount > 0) {
+            val child: View = getChildAt(0)
+            val width = right - left
+            val height = bottom - top
+            var previewWidth = width
+            var previewHeight = height
+            if (previewSize != null) {
+                previewWidth = previewSize!!.width
+                previewHeight = previewSize!!.height
+            }
+            if (width * previewHeight > height * previewWidth) {
+                val scaledChildWidth = previewWidth * height / previewHeight
+                child.layout(
+                    (width - scaledChildWidth) / 2, 0,
+                    (width + scaledChildWidth) / 2, height
+                )
             } else {
-                //Permission was granted
-                openCamera()
-            }
-        } else {
-            //System is younger than marshmallow
-            openCamera()
-        }
-
-    }
-
-    private fun openCamera() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "YOUR WAY TO GO")
-        changeDirection()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            PERMISSION_CODE -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Permission was granted
-                    openCamera()
-                } else {
-                    //Permission was denied
-                    Toast.makeText(this, "Permission was denied", Toast.LENGTH_SHORT).show()
-
-                }
+                val scaledChildHeight = previewHeight * width / previewWidth
+                child.layout(
+                    0, (height - scaledChildHeight) / 2,
+                    width, (height + scaledChildHeight) / 2
+                )
             }
         }
     }
 
-    //WHAT KIND OF IMAGES SHOULD BE USED?
-    private fun changeDirection(){
-        //TODO change imageView to go to the correct location
-        val direction = findViewById<ImageView>(R.id.direction)
-
-        if(directionToGo == 0){
-            //direction.setImageResource(R.id.new_image);
-        } else if(directionToGo == 1){
-            //direction.setImageResource(R.id.new_image);
-        }else if(directionToGo == 2){
-            //direction.setImageResource(R.id.new_image);
-        }else if(directionToGo == 3){
-            //direction.setImageResource(R.id.new_image);
-        }else if(directionToGo == 4){
-            //direction.setImageResource(R.id.new_image);
+    override fun surfaceCreated(holder: SurfaceHolder) {
+        try {
+            if (camera != null) {
+                parameters = camera!!.parameters
+                val orientation: Int = getCameraOrientation()
+                camera!!.setDisplayOrientation(orientation)
+                camera!!.parameters.setRotation(orientation)
+                camera!!.setPreviewDisplay(holder)
+            }
+        } catch (exception: IOException) {
+            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception)
         }
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onLocationChanged(location: Location) {
-        TODO("Not yet implemented")
-    }
-
-    /*
     private fun getCameraOrientation(): Int {
-        val info = android.hardware.Camera.CameraInfo()
+        val info = Camera.CameraInfo()
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, info)
+
         val rotation = activity!!.windowManager.defaultDisplay.rotation
+
         var degrees = 0
         when (rotation) {
             Surface.ROTATION_0 -> degrees = 0
@@ -137,21 +114,77 @@ class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
             Surface.ROTATION_180 -> degrees = 180
             Surface.ROTATION_270 -> degrees = 270
         }
+
         var orientation: Int
-        //if (info.facing == Camera.CAMERA_FACING_FRONT) { NOT WORKING
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             orientation = (info.orientation + degrees) % 360
             orientation = (360 - orientation) % 360
-        //} else {
+        } else {
             orientation = (info.orientation - degrees + 360) % 360
-        //}
+        }
+
         return orientation
     }
 
-
-    fun surfaceDestroyed(holder: SurfaceHolder?) {
-        if (ARCamera != null) {
-            ARCamera = null
+    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+        if (camera != null) {
+            cameraWidth = width
+            cameraHeight = height
+            val params = camera!!.parameters
+            params.setPreviewSize(previewSize!!.width, previewSize!!.height)
+            requestLayout()
+            camera!!.parameters = params
+            camera!!.startPreview()
+            generateProjectionMatrix()
         }
+    }
+
+    override fun surfaceDestroyed(holder: SurfaceHolder) {
+        if (camera != null) {
+            camera!!.setPreviewCallback(null);
+            camera!!.stopPreview();
+            camera!!.release();
+            camera = null;
+        }
+    }
+
+
+    fun getOptimalPreviewSize(sizes: List<Camera.Size> , width: Int , height: Int): Camera.Size? {
+        val ASPECT_TOLERANCE = 0.1
+        val targetRatio = width.toDouble() / height
+        if (sizes == null) return null
+
+        var optimalSize: Camera.Size? = null
+        var minDiff = Double.MAX_VALUE
+
+        val targetHeight = height
+
+        for (size in sizes) {
+            val ratio = size.width.toDouble() / size.height
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) {
+                continue
+            }
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size
+                minDiff = Math.abs(size.height - targetHeight).toDouble()
+            }
+        }
+
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE
+            for (size in sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size
+                    minDiff = Math.abs(size.height - targetHeight).toDouble()
+                }
+            }
+        }
+
+        if(optimalSize == null) {
+            optimalSize = sizes.get(0);
+        }
+
+        return optimalSize
     }
 
     private fun generateProjectionMatrix() {
@@ -169,6 +202,10 @@ class ARCamera: AppCompatActivity(), SensorEventListener, LocationListener {
         Matrix.frustumM(projectionMatrix, OFFSET, LEFT, RIGHT, BOTTOM, TOP, Z_NEAR, Z_FAR)
     }
 
-     */
+    @JvmName("getProjectionMatrix1")
+    fun getProjectionMatrix(): FloatArray? {
+        return projectionMatrix
+    }
+
 
 }
