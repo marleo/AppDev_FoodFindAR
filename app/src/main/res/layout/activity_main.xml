@@ -107,13 +107,4 @@
         app:layout_constraintVertical_bias="0.109"
         app:srcCompat="@drawable/ic_donut_button" />
 
-    <Button
-        android:id="@+id/buttonHelp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HELPCamera"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="483dp"
-        tools:ignore="MissingConstraints" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,7 @@ import com.uni.foodfindar.R
 
 class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
 
-    val TAG = "ARActivity"
+    //val TAG = "ARActivity"
     private var surfaceView: SurfaceView? = null
     private var cameraContainerLayout: FrameLayout? = null
     private var arOverlayView: ViewCamera? = null
@@ -37,7 +37,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
     private var tvBearing: TextView? = null
 
     private var sensorManager: SensorManager? = null
-    private val REQUEST_CAMERA_PERMISSIONS_CODE = 11
+    //private val REQUEST_CAMERA_PERMISSIONS_CODE = 11
     val REQUEST_LOCATION_PERMISSIONS_CODE = 0
 
     private val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 0 // 10 meters
@@ -226,7 +226,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
 
                 if (arCamera == null) {
                     requestCameraPermission()
-                    initARCameraView()
+                    //initARCameraView()
                 }
                 val projectionMatrix: FloatArray? = arCamera?.getProjectionMatrix()
                 val rotatedProjectionMatrix = FloatArray(16)
@@ -324,27 +324,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        TODO("Not yet implemented")
+        updateLatestLocation();
     }
 
-    /**
-    override fun onRequestPermissionsResult(
-    requestCode: Int,
-    permissions: Array<out String>,
-    grantResults: IntArray
-    ) {
-    when (requestCode) {
-    PERMISSION_CODE -> {
-    if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-    //Permission was granted
-    initARCameraView()
-    } else {
-    //Permission was denied
-    Toast.makeText(this, "Permission was denied", Toast.LENGTH_SHORT).show()
-
-    }
-    }
-    }
-    }
-     */
 }

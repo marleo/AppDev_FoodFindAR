@@ -67,13 +67,6 @@ class MainActivity : AppCompatActivity() {
         nearby = findViewById(R.id.nearby_button)
         filter = findViewById(R.id.filter)
 
-        var helpButton = findViewById<Button>(R.id.buttonHelp)
-
-        helpButton.setOnClickListener{
-            val intent = Intent(this, ARActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
-        }
 
         setting.setOnClickListener {
 

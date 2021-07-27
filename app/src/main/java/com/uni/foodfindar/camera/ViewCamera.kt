@@ -1,5 +1,6 @@
 package com.uni.foodfindar.camera
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -8,6 +9,8 @@ import android.graphics.Typeface
 import android.location.Location
 import android.opengl.Matrix
 import android.view.View
+import com.uni.foodfindar.Places
+import com.uni.foodfindar.views.LocationRecyclerAdapter
 
 
 class ViewCamera(context: Context?) : View(context) {
@@ -15,7 +18,8 @@ class ViewCamera(context: Context?) : View(context) {
     //private val context: Context? = context
     private var rotatedProjectionMatrix = FloatArray(16)
     private var currentLocation: Location? = null
-    private var arPoints: List<PointCamera>? = null
+    private var arPoints: MutableList<PointCamera> = mutableListOf()
+    private lateinit var locationRecyclerAdapter: LocationRecyclerAdapter
 
 
     fun updateRotatedProjectionMatrix(rotatedProjectionMatrix: FloatArray?) {
@@ -30,6 +34,7 @@ class ViewCamera(context: Context?) : View(context) {
 
 
     //NEED THE DATA!!!!
+    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
 
         super.onDraw(canvas)
@@ -43,13 +48,14 @@ class ViewCamera(context: Context?) : View(context) {
         paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
         paint.textSize = 60f
 
-        for (i in arPoints!!.indices) {
+        for (i in arPoints.indices) {
 
-            val currentLocationInECEF: FloatArray? = LocationHelper.WSG84toECEF(currentLocation!!)
-            val pointInECEF: FloatArray =
-                LocationHelper.WSG84toECEF(arPoints!![i].getLocation()!!)!!
-            val pointInENU: FloatArray =
-                LocationHelper.ECEFtoENU(currentLocation!!, currentLocationInECEF!!, pointInECEF)!!
+            val currentLocationInECEF: FloatArray? =                                               //Earth-Centered, Earth-Fixed
+                LocationHelper.WSG84toECEF(currentLocation!!)
+            val pointInLongitude: FloatArray =
+                LocationHelper.WSG84toECEF(arPoints[i].getLocation()!!)!!
+            val pointInENU: FloatArray =                                                                        // East-North-Up
+                LocationHelper.ECEFtoENU(currentLocation!!, currentLocationInECEF!!, pointInLongitude)!!
             val cameraCoordinateVector = FloatArray(4)
             Matrix.multiplyMV(
                 cameraCoordinateVector, 0, rotatedProjectionMatrix,
@@ -72,5 +78,10 @@ class ViewCamera(context: Context?) : View(context) {
                 )
             }
         }
+    }
+
+    fun addLocation(location: Places){
+        var pointCamera = PointCamera("Location", location.lat!!, location.lon!!, 1050) //TODO NEED ALTITUDE - Z KOORDINATE
+        arPoints.add(pointCamera)
     }
 }
