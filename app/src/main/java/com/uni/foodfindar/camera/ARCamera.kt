@@ -1,4 +1,5 @@
 package com.uni.foodfindar.camera
+
 import android.app.Activity
 import android.content.Context
 import android.hardware.*
@@ -8,7 +9,8 @@ import android.view.*
 import java.io.IOException
 
 
-class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder.Callback, ViewGroup(context) {
+class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder.Callback,
+    ViewGroup(context) {
 
     private val TAG = "ARCamera"
 
@@ -147,7 +149,7 @@ class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder
     }
 
 
-    fun getOptimalPreviewSize(sizes: List<Camera.Size> , width: Int , height: Int): Camera.Size? {
+    fun getOptimalPreviewSize(sizes: List<Camera.Size>, width: Int, height: Int): Camera.Size? {
         val ASPECT_TOLERANCE = 0.1
         val targetRatio = width.toDouble() / height
         if (sizes == null) return null
@@ -178,7 +180,7 @@ class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder
             }
         }
 
-        if(optimalSize == null) {
+        if (optimalSize == null) {
             optimalSize = sizes.get(0);
         }
 

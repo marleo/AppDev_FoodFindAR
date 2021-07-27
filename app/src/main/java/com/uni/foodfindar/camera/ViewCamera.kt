@@ -46,12 +46,15 @@ class ViewCamera(context: Context?) : View(context) {
         for (i in arPoints!!.indices) {
 
             val currentLocationInECEF: FloatArray? = LocationHelper.WSG84toECEF(currentLocation!!)
-            val pointInECEF: FloatArray = LocationHelper.WSG84toECEF(arPoints!![i].getLocation()!!)!!
+            val pointInECEF: FloatArray =
+                LocationHelper.WSG84toECEF(arPoints!![i].getLocation()!!)!!
             val pointInENU: FloatArray =
                 LocationHelper.ECEFtoENU(currentLocation!!, currentLocationInECEF!!, pointInECEF)!!
             val cameraCoordinateVector = FloatArray(4)
-            Matrix.multiplyMV(cameraCoordinateVector, 0, rotatedProjectionMatrix,
-                0, pointInENU, 0)
+            Matrix.multiplyMV(
+                cameraCoordinateVector, 0, rotatedProjectionMatrix,
+                0, pointInENU, 0
+            )
 
             // cameraCoordinateVector[2] is z, that always less than 0 to display on right position
             // if z > 0, the point will display on the opposite
@@ -70,6 +73,4 @@ class ViewCamera(context: Context?) : View(context) {
             }
         }
     }
-
-
 }
