@@ -27,23 +27,22 @@ import com.uni.foodfindar.R
 
 class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
 
-    //val TAG = "ARActivity"
+
     private var surfaceView: SurfaceView? = null
     private var cameraContainerLayout: FrameLayout? = null
-    private var arOverlayView: ViewCamera? = null
+    private var viewCamera: ViewCamera? = null
     private var camera: Camera? = null
     private var arCamera: ARCamera? = null
     private var tvCurrentLocation: TextView? = null
     private var tvBearing: TextView? = null
 
     private var sensorManager: SensorManager? = null
-    //private val REQUEST_CAMERA_PERMISSIONS_CODE = 11
-    val REQUEST_LOCATION_PERMISSIONS_CODE = 0
+    private val REQUEST_LOCATION_PERMISSIONS_CODE = 0
 
-    private val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 0 // 10 meters
+    private val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 0   // 10 meters
+    private val MIN_TIME_BW_UPDATES: Long = 0               //1000 * 60 * 1; // 1 minute
 
-    private val MIN_TIME_BW_UPDATES: Long = 0 //1000 * 60 * 1; // 1 minute
-
+    private val PERMISSION_CODE: Int = 11
 
     private var locationManager: LocationManager? = null
     var location: Location? = null
@@ -53,20 +52,16 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
     private val declination = 0f
 
 
-    private val PERMISSION_CODE: Int = 11
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-
 
         sensorManager = this.getSystemService(SENSOR_SERVICE) as SensorManager
         cameraContainerLayout = findViewById(R.id.camera_container_layout)
         surfaceView = findViewById(R.id.surface_view)
         tvCurrentLocation = findViewById(R.id.tv_current_location)
         tvBearing = findViewById(R.id.tv_bearing)
-        arOverlayView = ViewCamera(this)
-
+        viewCamera = ViewCamera(this)
     }
 
     override fun onResume() {
@@ -82,7 +77,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
         super.onPause()
     }
 
-    fun requestCameraPermission() {
+    private fun requestCameraPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
                 //Permission was not given
@@ -97,19 +92,9 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
             //System is younger than marshmallow
             initARCameraView()
         }
-
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-            checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSIONS_CODE)
-        } else {
-            initARCameraView()
-        }
-
-         */
     }
 
-    fun requestLocationPermission() {
+    private fun requestLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
             checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) {
@@ -123,22 +108,18 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
     }
 
     private fun initAROverlayView() {
-        if (arOverlayView!!.parent != null) {
-            (arOverlayView!!.parent as ViewGroup).removeView(arOverlayView)
+        if (viewCamera!!.parent != null) {
+            (viewCamera!!.parent as ViewGroup).removeView(viewCamera)
         }
-        cameraContainerLayout!!.addView(arOverlayView)
+        cameraContainerLayout!!.addView(viewCamera)
     }
 
     private fun initARCameraView() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "YOUR WAY TO GO")
-
         reloadSurfaceView()
         if (arCamera == null) {
-
             arCamera = ARCamera(this, findViewById(R.id.surface_view))
         }
-        if (arCamera!!.getParent() != null) {
+        if (arCamera!!.parent != null) {
             (arCamera!!.parent as ViewGroup).removeView(arCamera)
         }
         cameraContainerLayout!!.addView(arCamera)
@@ -185,7 +166,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
 
     override fun onSensorChanged(sensorEvent: SensorEvent?) {
         if (sensorEvent != null) {
-            if (sensorEvent.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
+            if (sensorEvent.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
                 val rotationMatrixFromVector = FloatArray(16)
                 val rotationMatrix = FloatArray(16)
                 if (sensorEvent != null) {
@@ -226,7 +207,6 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
 
                 if (arCamera == null) {
                     requestCameraPermission()
-                    //initARCameraView()
                 }
                 val projectionMatrix: FloatArray? = arCamera?.getProjectionMatrix()
                 val rotatedProjectionMatrix = FloatArray(16)
@@ -238,10 +218,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
                     rotationMatrix,
                     0
                 )
-                arOverlayView!!.updateRotatedProjectionMatrix(rotatedProjectionMatrix)
-
-
-                //Heading
+                viewCamera!!.updateRotatedProjectionMatrix(rotatedProjectionMatrix)
 
                 //Heading
                 val orientation = FloatArray(3)
@@ -259,7 +236,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
         }
     }
 
-    fun initLocationService() {
+    private fun initLocationService() {
 
         if (Build.VERSION.SDK_INT >= 23 &&
             ContextCompat.checkSelfPermission(
@@ -270,10 +247,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
             return;
         }
 
-
         locationManager = this.getSystemService(LOCATION_SERVICE) as LocationManager
-
-        // Get GPS and network status
 
         // Get GPS and network status
         isGPSEnabled = locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -314,8 +288,8 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
     }
 
     private fun updateLatestLocation() {
-        if (arOverlayView != null && location != null) {
-            arOverlayView!!.updateCurrentLocation(location)
+        if (viewCamera != null && location != null) {
+            viewCamera!!.updateCurrentLocation(location)
             tvCurrentLocation!!.text = String.format(
                 "lat: %s \nlon: %s \naltitude: %s \n",
                 location!!.latitude, location!!.longitude, location!!.altitude

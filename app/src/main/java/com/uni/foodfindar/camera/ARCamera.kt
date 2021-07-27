@@ -7,6 +7,7 @@ import android.opengl.Matrix
 import android.util.Log
 import android.view.*
 import java.io.IOException
+import kotlin.math.abs
 
 
 class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder.Callback,
@@ -14,9 +15,9 @@ class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder
 
     private val TAG = "ARCamera"
 
-    var surfaceHolder: SurfaceHolder? = null
-    var previewSize: Camera.Size? = null
-    var supportedPreviewSizes: List<Camera.Size>? = null
+    private var surfaceHolder: SurfaceHolder? = null
+    private var previewSize: Camera.Size? = null
+    private var supportedPreviewSizes: List<Camera.Size>? = null
     var camera: Camera? = null
     var parameters: Camera.Parameters? = null
     var activity: Activity? = null
@@ -51,8 +52,8 @@ class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec)
-        val height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec)
+        val width = resolveSize(suggestedMinimumWidth, widthMeasureSpec)
+        val height = resolveSize(suggestedMinimumHeight, heightMeasureSpec)
         setMeasuredDimension(width, height)
         if (supportedPreviewSizes != null) {
             previewSize = getOptimalPreviewSize(supportedPreviewSizes!!, width, height)
@@ -156,31 +157,29 @@ class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder
         var optimalSize: Camera.Size? = null
         var minDiff = Double.MAX_VALUE
 
-        val targetHeight = height
-
         for (size in sizes) {
             val ratio = size.width.toDouble() / size.height
-            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) {
+            if (abs(ratio - targetRatio) > ASPECT_TOLERANCE) {
                 continue
             }
-            if (Math.abs(size.height - targetHeight) < minDiff) {
+            if (abs(size.height - height) < minDiff) {
                 optimalSize = size
-                minDiff = Math.abs(size.height - targetHeight).toDouble()
+                minDiff = abs(size.height - height).toDouble()
             }
         }
 
         if (optimalSize == null) {
             minDiff = Double.MAX_VALUE
             for (size in sizes) {
-                if (Math.abs(size.height - targetHeight) < minDiff) {
+                if (abs(size.height - height) < minDiff) {
                     optimalSize = size
-                    minDiff = Math.abs(size.height - targetHeight).toDouble()
+                    minDiff = abs(size.height - height).toDouble()
                 }
             }
         }
 
         if (optimalSize == null) {
-            optimalSize = sizes.get(0);
+            optimalSize = sizes[0];
         }
 
         return optimalSize

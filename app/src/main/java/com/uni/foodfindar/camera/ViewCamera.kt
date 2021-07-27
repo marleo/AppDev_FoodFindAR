@@ -10,16 +10,13 @@ import android.location.Location
 import android.opengl.Matrix
 import android.view.View
 import com.uni.foodfindar.Places
-import com.uni.foodfindar.views.LocationRecyclerAdapter
 
 
 class ViewCamera(context: Context?) : View(context) {
 
-    //private val context: Context? = context
     private var rotatedProjectionMatrix = FloatArray(16)
     private var currentLocation: Location? = null
     private var arPoints: MutableList<PointCamera> = mutableListOf()
-    private lateinit var locationRecyclerAdapter: LocationRecyclerAdapter
 
 
     fun updateRotatedProjectionMatrix(rotatedProjectionMatrix: FloatArray?) {
@@ -50,11 +47,11 @@ class ViewCamera(context: Context?) : View(context) {
 
         for (i in arPoints.indices) {
 
-            val currentLocationInECEF: FloatArray? =                                               //Earth-Centered, Earth-Fixed
+            val currentLocationInECEF: FloatArray? =                  //Earth-Centered, Earth-Fixed
                 LocationHelper.WSG84toECEF(currentLocation!!)
             val pointInLongitude: FloatArray =
                 LocationHelper.WSG84toECEF(arPoints[i].getLocation()!!)!!
-            val pointInENU: FloatArray =                                                                        // East-North-Up
+            val pointInENU: FloatArray =                                           // East-North-Up
                 LocationHelper.ECEFtoENU(currentLocation!!, currentLocationInECEF!!, pointInLongitude)!!
             val cameraCoordinateVector = FloatArray(4)
             Matrix.multiplyMV(
@@ -81,7 +78,8 @@ class ViewCamera(context: Context?) : View(context) {
     }
 
     fun addLocation(location: Places){
-        var pointCamera = PointCamera("Location", location.lat!!, location.lon!!, 1050) //TODO NEED ALTITUDE - Z KOORDINATE
+        //TODO NEED ALTITUDE - Z KOORDINATE
+        var pointCamera = PointCamera("Location", location.lat!!, location.lon!!, 1050)
         arPoints.add(pointCamera)
     }
 }

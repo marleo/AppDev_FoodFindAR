@@ -2,7 +2,6 @@ package com.uni.foodfindar.views
 
 import android.content.Context
 import android.content.Intent
-
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
-import com.uni.foodfindar.activity_map
 import com.uni.foodfindar.camera.ARActivity
 import com.uni.foodfindar.camera.ViewCamera
 

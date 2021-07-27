@@ -25,8 +25,6 @@ import com.google.gson.Gson
 import com.uni.foodfindar.ApiResponse
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
-import com.uni.foodfindar.camera.ARActivity
-import com.uni.foodfindar.camera.ARCamera
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlin.math.asin
