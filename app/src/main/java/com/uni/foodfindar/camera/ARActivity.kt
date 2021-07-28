@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.*
 import android.location.Location
@@ -23,10 +24,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
+import com.uni.foodfindar.views.LocationRecyclerAdapter
+import com.uni.foodfindar.views.Nearby_locations
 
 class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
-
 
     private var surfaceView: SurfaceView? = null
     private var cameraContainerLayout: FrameLayout? = null
@@ -50,18 +53,21 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
     var isNetworkEnabled = false
     var locationServiceAvailable = false
     private val declination = 0f
+    lateinit var list :Places
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
+        val bundle = intent.extras
+        list = (bundle?.getParcelable<Places>("Location")!!)
 
         sensorManager = this.getSystemService(SENSOR_SERVICE) as SensorManager
         cameraContainerLayout = findViewById(R.id.camera_container_layout)
         surfaceView = findViewById(R.id.surface_view)
         tvCurrentLocation = findViewById(R.id.tv_current_location)
         tvBearing = findViewById(R.id.tv_bearing)
-        viewCamera = ViewCamera(this)
+        viewCamera = ViewCamera(this, list)
     }
 
     override fun onResume() {

@@ -3,6 +3,7 @@ package com.uni.foodfindar.views
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,13 +59,12 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         private var locationDistanceString: String = ""
         private var locationWebsite: ImageView = itemView.findViewById(R.id.website)
         private var cont: Context = context
-        private var viewCamera =  ViewCamera(context)
 
         fun bind(location: Places){
             locationName.text = location.name
             locationDistanceString = (location.distance?.times(1000)?.toInt()).toString() + "m"
             locationDistance.text = locationDistanceString
-            viewCamera.addLocation(location)
+           //viewCamera.addLocation(location)
 
             if (location.website != null){
                 locationWebsite.visibility = View.VISIBLE
@@ -80,7 +80,11 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             itemView.setOnClickListener {
                 Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
                 val intent = Intent(cont, ARActivity::class.java)
+                val bundle = Bundle()
+                bundle.putParcelable("Location", location)
+                intent.putExtras(bundle)
                 startActivity(cont, intent, null)
+
             }
         }
     }

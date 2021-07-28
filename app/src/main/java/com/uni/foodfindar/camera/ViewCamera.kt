@@ -8,15 +8,22 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.location.Location
 import android.opengl.Matrix
+import android.util.Log
 import android.view.View
 import com.uni.foodfindar.Places
 
 
-class ViewCamera(context: Context?) : View(context) {
+class ViewCamera(context: Context?, place: Places?) : View(context) {
 
     private var rotatedProjectionMatrix = FloatArray(16)
     private var currentLocation: Location? = null
     private var arPoints: MutableList<PointCamera> = mutableListOf()
+
+    init{
+        if (place != null) {
+            arPoints.add(PointCamera("Location", place.lat!!, place.lon!!, 1050.0))
+        }
+    }
 
 
     fun updateRotatedProjectionMatrix(rotatedProjectionMatrix: FloatArray?) {
@@ -29,11 +36,9 @@ class ViewCamera(context: Context?) : View(context) {
         this.invalidate()
     }
 
-
     //NEED THE DATA!!!!
     @SuppressLint("DrawAllocation")
     public override fun onDraw(canvas: Canvas) {
-
         super.onDraw(canvas)
         if (currentLocation == null) {
             return
@@ -45,8 +50,9 @@ class ViewCamera(context: Context?) : View(context) {
         paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
         paint.textSize = 60f
 
+        Log.i("HALLODVJ", arPoints.size.toString())
         for (i in arPoints.indices) {
-
+            Log.i("hsdbf", i.toString())
             val currentLocationInECEF: FloatArray? =                  //Earth-Centered, Earth-Fixed
                 LocationHelper.WSG84toECEF(currentLocation!!)
             val pointInLongitude: FloatArray =
@@ -75,11 +81,5 @@ class ViewCamera(context: Context?) : View(context) {
                 )
             }
         }
-    }
-
-    fun addLocation(location: Places){
-        //TODO NEED ALTITUDE - Z KOORDINATE
-        var pointCamera = PointCamera("Location", location.lat!!, location.lon!!, 5)
-        arPoints.add(pointCamera)
     }
 }

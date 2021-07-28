@@ -2,16 +2,16 @@ package com.uni.foodfindar.camera
 
 import android.location.Location
 
-class PointCamera(s: String, d: Double, d1: Double, i: Int) {
+class PointCamera(s: String, d: Double, d1: Double, i: Double) {
     private var location: Location? = null
     private var name: String? = null
 
-    fun PointCamera(name: String?, lat: Double, lon: Double, altitude: Double) {
-        this.name = name
+    init{
+        this.name = s
         location = Location("Point")
-        location!!.latitude = lat
-        location!!.longitude = lon
-        location!!.altitude = altitude
+        location!!.latitude =  d
+        location!!.longitude = d1
+        location!!.altitude = i
     }
 
     fun getLocation(): Location? {
