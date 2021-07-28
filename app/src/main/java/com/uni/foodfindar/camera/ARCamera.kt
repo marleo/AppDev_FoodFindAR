@@ -2,6 +2,9 @@ package com.uni.foodfindar.camera
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.hardware.*
 import android.opengl.Matrix
 import android.util.Log
@@ -203,6 +206,33 @@ class ARCamera(context: Context?, val surfaceView: SurfaceView?) : SurfaceHolder
     @JvmName("getProjectionMatrix1")
     fun getProjectionMatrix(): FloatArray? {
         return projectionMatrix
+    }
+
+    private fun drawingView(surfaceView: SurfaceView) {
+        val surfaceHolder: SurfaceHolder = surfaceView.holder
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG) //Anti aliasing flag for better circle
+        paint.color = Color.RED
+        paint.style = Paint.Style.FILL
+
+        val originArray = IntArray(2)
+        surfaceView.getLocationOnScreen(originArray) //find surfaceViews Y origin
+        var originY = originArray.get(1)
+
+        if (surfaceHolder.surface.isValid) {
+            val canvas: Canvas = surfaceHolder.lockCanvas() //prepare Canvas for drawing
+            val dotRad = 50 //circle radius
+            var dotY =
+                (dotRad / 2..canvas.height - dotRad / 2).random()
+                    .toFloat() //random Y coordinate in surfaceView
+            var dotX =
+                (dotRad / 2..canvas.width - dotRad / 2).random()
+                    .toFloat() //random X coordinate in surfaceView
+
+            canvas.drawColor(Color.BLACK)
+            canvas.drawCircle(dotX, dotY, dotRad.toFloat(), paint)
+            surfaceHolder.unlockCanvasAndPost(canvas) // Close canvas and refresh surfaceView
+            draw(canvas)
+        }
     }
 
 }

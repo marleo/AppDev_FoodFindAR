@@ -132,6 +132,7 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
             try {
                 camera = Camera.open()
                 arCamera?.setCamera(camera)
+                //viewCamera?.draw()
             } catch (ex: RuntimeException) {
                 Toast.makeText(this, "Camera not found", Toast.LENGTH_LONG).show()
             }

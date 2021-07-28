@@ -32,7 +32,7 @@ class ViewCamera(context: Context?) : View(context) {
 
     //NEED THE DATA!!!!
     @SuppressLint("DrawAllocation")
-    override fun onDraw(canvas: Canvas) {
+    public override fun onDraw(canvas: Canvas) {
 
         super.onDraw(canvas)
         if (currentLocation == null) {
@@ -79,7 +79,7 @@ class ViewCamera(context: Context?) : View(context) {
 
     fun addLocation(location: Places){
         //TODO NEED ALTITUDE - Z KOORDINATE
-        var pointCamera = PointCamera("Location", location.lat!!, location.lon!!, 1050)
+        var pointCamera = PointCamera("Location", location.lat!!, location.lon!!, 5)
         arPoints.add(pointCamera)
     }
 }
