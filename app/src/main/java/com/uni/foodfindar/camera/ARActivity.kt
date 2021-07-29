@@ -138,7 +138,6 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
             try {
                 camera = Camera.open()
                 arCamera?.setCamera(camera)
-                //viewCamera?.draw()
             } catch (ex: RuntimeException) {
                 Toast.makeText(this, "Camera not found", Toast.LENGTH_LONG).show()
             }
@@ -185,11 +184,12 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
                 val screenRotation = this.windowManager.defaultDisplay
                     .rotation
 
+                Log.i("HALLO", rotationMatrix.toString())
                 when (screenRotation) {
                     Surface.ROTATION_0 -> SensorManager.remapCoordinateSystem(
                         rotationMatrixFromVector,
+                        SensorManager.AXIS_X,
                         SensorManager.AXIS_Y,
-                        SensorManager.AXIS_MINUS_X,
                         rotationMatrix
                     )
                     Surface.ROTATION_90 -> SensorManager.remapCoordinateSystem(
@@ -211,6 +211,8 @@ class ARActivity : AppCompatActivity(), SensorEventListener, LocationListener {
                         rotationMatrix
                     )
                 }
+                Log.i("HALLO", rotationMatrix.toString())
+                updateLatestLocation()
 
                 if (arCamera == null) {
                     requestCameraPermission()

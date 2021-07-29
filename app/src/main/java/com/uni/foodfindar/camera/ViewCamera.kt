@@ -21,7 +21,7 @@ class ViewCamera(context: Context?, place: Places?) : View(context) {
 
     init{
         if (place != null) {
-            arPoints.add(PointCamera("Location", place.lat!!, place.lon!!, 1050.0))
+            arPoints.add(PointCamera(place.name!!, place.lat!!, place.lon!!, 1050.0))
         }
     }
 
@@ -36,7 +36,7 @@ class ViewCamera(context: Context?, place: Places?) : View(context) {
         this.invalidate()
     }
 
-    //NEED THE DATA!!!!
+
     @SuppressLint("DrawAllocation")
     public override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -51,14 +51,15 @@ class ViewCamera(context: Context?, place: Places?) : View(context) {
         paint.textSize = 60f
 
         Log.i("HALLODVJ", arPoints.size.toString())
-        for (i in arPoints.indices) {
-            Log.i("hsdbf", i.toString())
+       for (i in arPoints.indices) {
+           // Log.i("hsdbf", i.toString())
             val currentLocationInECEF: FloatArray? =                  //Earth-Centered, Earth-Fixed
                 LocationHelper.WSG84toECEF(currentLocation!!)
             val pointInLongitude: FloatArray =
                 LocationHelper.WSG84toECEF(arPoints[i].getLocation()!!)!!
             val pointInENU: FloatArray =                                           // East-North-Up
                 LocationHelper.ECEFtoENU(currentLocation!!, currentLocationInECEF!!, pointInLongitude)!!
+
             val cameraCoordinateVector = FloatArray(4)
             Matrix.multiplyMV(
                 cameraCoordinateVector, 0, rotatedProjectionMatrix,
@@ -73,13 +74,16 @@ class ViewCamera(context: Context?, place: Places?) : View(context) {
                 val y =
                     (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * canvas.height
                 canvas.drawCircle(x, y, radius.toFloat(), paint)
+
                 canvas.drawText(
                     arPoints!![i].getName()!!,
                     x - 30 * arPoints!![i].getName()!!.length / 2,
                     y - 80,
                     paint
                 )
+
             }
-        }
+       }
     }
+
 }

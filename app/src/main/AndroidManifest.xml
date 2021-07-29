@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.uni.foodfindar">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -7,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
 
     <application
         android:name=".views.Gps"
@@ -23,6 +25,8 @@
         <activity android:name=".views.Help" />
         <activity android:name=".views.Settings" />
         <activity android:name=".camera.ARActivity" />
+        <activity android:name=".arview.ARActivity" />
+
         <activity
             android:name=".views.SplashScreen"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
@@ -36,6 +40,16 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
     </application>
 
 </manifest>

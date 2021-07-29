@@ -79,7 +79,7 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
             itemView.setOnClickListener {
                 Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
-                val intent = Intent(cont, ARActivity::class.java)
+                val intent = Intent(cont, com.uni.foodfindar.arview.ARActivity :: class.java)
                 val bundle = Bundle()
                 bundle.putParcelable("Location", location)
                 intent.putExtras(bundle)
