@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
-
+import com.uni.foodfindar.arview.ArView
 
 
 class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
