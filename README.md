@@ -23,6 +23,8 @@ GSON (https://github.com/google/gson) - parsing JSON Objects
 
 Volley (https://github.com/google/volley) - Handling HTTP Requests
 
+ARCore (https://developers.google.com/ar) - AR View
+
 _for further information concerning the used API's, refer to the Github Pages wiki:_ https://github.com/marleo/AppDev_FoodFindAR/wiki
 
 ## Prototype
