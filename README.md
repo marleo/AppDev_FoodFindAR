@@ -39,8 +39,8 @@ The AR-View is only working reliably if you open Google Maps and check your loca
 
 Mira Kofler (AR Camera & Location Markers in AR)
  
-Christian Raunjak (Design & Activitydata)
+Christian Raunjak (Design & Activity-handling & Datahandling)
 
-Mario Leopold (Location hadnling, Network Request handling, Datapreparation)
+Mario Leopold (Location handling& Network Request handling & Datapreparation)
 
 *_various parts were made in group meetings. Commits were handled by the user that was streaming to the others. Therefore the insights might not reflect the real work by the participants_*
