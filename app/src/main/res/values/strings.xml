@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Food FindAR</string>
     <string name="preferences_key">HalloIchBinDerKey</string>
-    <string name="mapbox_access_token">pk.eyJ1IjoidGlzc3kwMSIsImEiOiJja3JxYnphMzQ1OWljMndwOG9lcmRzZTNmIn0.QUpbjaVIikI-YH-q4aw8mA</string>
 </resources>
