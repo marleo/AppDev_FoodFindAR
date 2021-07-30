@@ -31,7 +31,6 @@ class ArView: AppCompatActivity(), SensorEventListener {
     private val TAG = "ArView"
 
     private lateinit var arFragment: PlacesArFragment
-    private lateinit var mapFragment: SupportMapFragment
 
     // Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -103,9 +102,7 @@ class ArView: AppCompatActivity(), SensorEventListener {
     }
 
     private fun showSnackbar(message: String, length: Int){
-        val snack = Snackbar.make(findViewById(android.R.id.content), message, length).setAction("OK") {
-            it.invalidate()
-        }
+        val snack = Snackbar.make(findViewById(android.R.id.content), message, length)
         val view = snack.view
         val snackTextView: TextView = view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
         snackTextView.gravity = Gravity.CENTER_HORIZONTAL
