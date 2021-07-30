@@ -10,6 +10,8 @@ import android.hardware.SensorManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import androidx.core.content.getSystemService
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.google.ar.sceneform.AnchorNode
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
@@ -57,6 +60,8 @@ class ArView: AppCompatActivity(), SensorEventListener {
         val bundle = intent.extras
         val destination = bundle?.getParcelable<Places>("Place")
 
+        showSnackbar("Calibrate the device, then tap on the AR-Plane", Snackbar.LENGTH_INDEFINITE)
+
         arFragment = supportFragmentManager.findFragmentById(R.id.ar_fragment) as PlacesArFragment
         latLonText = findViewById(R.id.latLonText)
         Log.i("PlaceName", destination?.name!!)
@@ -95,6 +100,20 @@ class ArView: AppCompatActivity(), SensorEventListener {
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this)
+    }
+
+    private fun showSnackbar(message: String, length: Int){
+        val snack = Snackbar.make(findViewById(android.R.id.content), message, length).setAction("OK") {
+            it.invalidate()
+        }
+        val view = snack.view
+        val snackTextView: TextView = view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+        snackTextView.gravity = Gravity.CENTER_HORIZONTAL
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            snackTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+        }
+        view.setBackgroundColor(1571)
+        snack.show()
     }
 
     private fun setUpAr() {
@@ -140,6 +159,9 @@ class ArView: AppCompatActivity(), SensorEventListener {
                 orientationAngles[0],
                 currentLocation.latLng
         )
+
+        Toast.makeText(this, "Destination added, look around!", Toast.LENGTH_SHORT).show()
+
         Log.i("MainActivity", "Added place")
     }
 
