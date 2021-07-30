@@ -1,6 +1,8 @@
 package com.uni.foodfindar.views
 
+import android.Manifest
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
@@ -10,6 +12,7 @@ import android.content.pm.PackageManager
 import android.graphics.BlendMode
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -21,6 +24,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RetryPolicy
 import com.android.volley.VolleyError
@@ -31,6 +35,13 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
+import com.mapbox.mapboxsdk.location.modes.CameraMode
+import com.mapbox.mapboxsdk.location.modes.RenderMode
+import com.mapbox.mapboxsdk.maps.MapView
+import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.mapboxsdk.maps.Style
 import com.uni.foodfindar.ApiResponse
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
@@ -52,12 +63,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appKey: String
     private lateinit var logo: ImageView
     private lateinit var retry: ImageButton
+    private var mapView: MapView? = null
+    private lateinit var map: MapboxMap
+
 
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
 
     private var restaurantFilter = true
     private var cafeFilter = false
     private var barFilter = false
+
+
+
 
     private var checkedFilterArray = booleanArrayOf(restaurantFilter, cafeFilter, barFilter)
 
@@ -77,6 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Mapbox.getInstance(this, getString(R.string.mapbox_access_token))
         setContentView(R.layout.activity_main)
 
         cont = this
@@ -89,10 +107,18 @@ class MainActivity : AppCompatActivity() {
         appKey = resources.getString(R.string.preferences_key)
         retry = findViewById(R.id.retry)
 
+        mapView = findViewById(R.id.mapVW)
+        mapView?.onCreate(savedInstanceState)
+
+
+
         createPreferences()
-
-
         disableUI()
+        initPermissions()
+
+
+
+
 
         setting.setOnClickListener {
 
@@ -200,6 +226,70 @@ class MainActivity : AppCompatActivity() {
         }
         getLocation()
     }
+
+
+    private fun initPermissions(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+            updateLocation()
+        }else{
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+               ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), 0)
+            }
+        }
+    }
+
+    private fun updateLocation(){
+        mapView?.getMapAsync (this::onMapReady)
+    }
+
+    private fun onMapReady(map: MapboxMap){
+        this.map = map
+        map.setStyle(Style.MAPBOX_STREETS, this::onMapStyleReady)
+    }
+
+    private fun onMapStyleReady(style: Style){
+        map.locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(this, style).build())
+        map.locationComponent.cameraMode = CameraMode.TRACKING
+        map.locationComponent.zoomWhileTracking(14.0, 3000)
+        map.locationComponent.renderMode = RenderMode.COMPASS
+        map.locationComponent.tiltWhileTracking(45.0)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mapView?.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView?.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView?.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mapView?.onStop()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapView?.onSaveInstanceState(outState)
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView?.onLowMemory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView?.onDestroy()
+    }
+
 
     private fun getLocation() {
         if (ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
