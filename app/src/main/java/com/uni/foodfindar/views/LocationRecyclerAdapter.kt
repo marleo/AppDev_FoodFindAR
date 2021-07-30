@@ -14,8 +14,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
-import com.uni.foodfindar.camera.ARActivity
-import com.uni.foodfindar.camera.ViewCamera
+
 
 
 class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -79,7 +78,7 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
             itemView.setOnClickListener {
                 Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
-                val intent = Intent(cont, com.uni.foodfindar.arview.ARActivity :: class.java)
+                val intent = Intent(cont, com.uni.foodfindar.arview.ArView :: class.java)
                 val bundle = Bundle()
                 bundle.putParcelable("Location", location)
                 intent.putExtras(bundle)
