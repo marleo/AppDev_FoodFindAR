@@ -33,14 +33,14 @@ Check it out (https://www.figma.com/proto/kHPQnljHRPmvtl42gGO1uq/Food-FindAR?pag
 
 ## Known Bugs
 
-The AR-View is only working reliably if you open Google Maps and check your location there beforehand. Otherwise the Location received by the FusedLocationAdapter might get old, non accurate location data. To prevent this, open Google Maps, press the locate button on the bottom right, then exit Maps and open FoodFindAR. This has to be replicated everytime, you want to get the accurate AR position.
+The AR-View is only working reliably if you open Google Maps and check your location there beforehand. Otherwise, the Location received by the FusedLocationAdapter might get old, inaccurate location data. To prevent this, open Google Maps, press the locate button on the bottom right, then exit Maps and open FoodFindAR. This has to be replicated every time, you want to get the accurate AR position.
 
-## Groupmembers & Tasks
+## Group members & Tasks
 
 Mira Kofler (AR Camera & Location Markers in AR)
  
-Christian Raunjak (Design & Activity-handling & Datahandling)
+Christian Raunjak (Design & Activity-handling & Data-handling)
 
-Mario Leopold (Location handling& Network Request handling & Datapreparation)
+Mario Leopold (Location-handling & Networkrequest-handling & Data preparation)
 
 *_various parts were made in group meetings. Commits were handled by the user that was streaming to the others. Therefore the insights might not reflect the real work by the participants_*
