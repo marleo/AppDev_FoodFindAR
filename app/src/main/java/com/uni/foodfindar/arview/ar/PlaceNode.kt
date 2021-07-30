@@ -37,6 +37,12 @@ class PlaceNode(
                 setRenderable(renderable)
                 placeRenderable = renderable
 
+                place?.let {
+                    textViewPlaceDistance = renderable.view.findViewById(R.id.placeDistance)
+                    textViewPlaceDistance?.text = it.distance
+                    textViewPlaceName = renderable.view.findViewById(R.id.placeName)
+                    textViewPlaceName?.text = it.name
+                }
             }
     }
 }
