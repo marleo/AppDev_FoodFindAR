@@ -63,8 +63,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appKey: String
     private lateinit var logo: ImageView
     private lateinit var retry: ImageButton
-    private var mapView: MapView? = null
-    private lateinit var map: MapboxMap
+
 
 
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
@@ -107,14 +106,12 @@ class MainActivity : AppCompatActivity() {
         appKey = resources.getString(R.string.preferences_key)
         retry = findViewById(R.id.retry)
 
-        mapView = findViewById(R.id.mapVW)
-        mapView?.onCreate(savedInstanceState)
 
 
 
         createPreferences()
         disableUI()
-        initPermissions()
+
 
 
 
@@ -228,67 +225,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun initPermissions(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
-            updateLocation()
-        }else{
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-               ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), 0)
-            }
-        }
-    }
 
-    private fun updateLocation(){
-        mapView?.getMapAsync (this::onMapReady)
-    }
 
-    private fun onMapReady(map: MapboxMap){
-        this.map = map
-        map.setStyle(Style.MAPBOX_STREETS, this::onMapStyleReady)
-    }
 
-    private fun onMapStyleReady(style: Style){
-        map.locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(this, style).build())
-        map.locationComponent.cameraMode = CameraMode.TRACKING
-        map.locationComponent.zoomWhileTracking(14.0, 3000)
-        map.locationComponent.renderMode = RenderMode.COMPASS
-        map.locationComponent.tiltWhileTracking(45.0)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mapView?.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mapView?.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mapView?.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView?.onStop()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView?.onSaveInstanceState(outState)
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView?.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView?.onDestroy()
-    }
 
 
     private fun getLocation() {
