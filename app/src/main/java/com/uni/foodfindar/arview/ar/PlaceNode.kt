@@ -2,19 +2,21 @@ package com.uni.foodfindar.arview.ar
 
 import android.content.Context
 import android.os.Build
-import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.uni.foodfindar.arview.Place
 import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.rendering.ViewRenderable
 import com.uni.foodfindar.R
+import com.uni.foodfindar.arview.Place
 
-
-class PlaceNode(val context: Context, val place: Place?) : Node() {
+class PlaceNode(
+    val context: Context,
+    val place: Place?
+) : Node() {
 
     private var placeRenderable: ViewRenderable? = null
-    private var textViewPlace: TextView? = null
+    private var textViewPlaceDistance: TextView? = null
+    private var textViewPlaceName: TextView? = null
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onActivate() {
@@ -35,24 +37,6 @@ class PlaceNode(val context: Context, val place: Place?) : Node() {
                 setRenderable(renderable)
                 placeRenderable = renderable
 
-                place?.let {
-                    textViewPlace = renderable.view.findViewById(R.id.placeName)
-                    textViewPlace?.text = it.name
-                }
             }
-    }
-
-    fun showInfoWindow() {
-        // Show text
-        textViewPlace?.let {
-            it.visibility = if (it.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        }
-
-        // Hide text for other nodes
-        this.parent?.children?.filter {
-            it is PlaceNode && it != this
-        }?.forEach {
-            (it as PlaceNode).textViewPlace?.visibility = View.GONE
-        }
     }
 }
