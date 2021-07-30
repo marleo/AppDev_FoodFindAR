@@ -1,8 +1,7 @@
 package com.uni.foodfindar.views
 
-import android.Manifest
+
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
