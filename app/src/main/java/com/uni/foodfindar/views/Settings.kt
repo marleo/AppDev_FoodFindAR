@@ -1,14 +1,15 @@
 package com.uni.foodfindar.views
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import com.uni.foodfindar.R
+import kotlinx.android.synthetic.main.activity_settings.*
 
 
 class Settings : AppCompatActivity() {
@@ -18,8 +19,9 @@ class Settings : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(0,0)
+        overridePendingTransition(0, 0)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,25 +31,37 @@ class Settings : AppCompatActivity() {
         help = findViewById(R.id.help)
 
 
-        setting.setOnClickListener{
+
+
+        settingLayout.setOnTouchListener { _, _ ->
+            finish()
+            overridePendingTransition(0, 0)
+
+            true
+        }
+
+
+
+
+        setting.setOnClickListener {
             finish()
             overridePendingTransition(0, 0)
         }
 
 
-        help.setOnClickListener{
+        help.setOnClickListener {
             val intent = Intent(this, Help::class.java)
             startActivity(intent)
         }
 
 
 
+
+
+
     }
 
 
-
-
-
-    }
+}
 
 

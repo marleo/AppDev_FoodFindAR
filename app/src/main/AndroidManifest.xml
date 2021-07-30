@@ -23,9 +23,9 @@
         <activity android:name=".activity_map" />
         <activity android:name=".views.MainActivity" />
         <activity android:name=".views.Help" />
-        <activity android:name=".views.Settings" />
-        <activity android:name=".camera.ARActivity" />
-        <activity android:name=".arview.ARActivity" />
+        <activity android:name=".views.Settings"  />
+
+
 
         <activity
             android:name=".views.SplashScreen"

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Food FindAR</string>
+    <string name="preferences_key">HalloIchBinDerKey</string>
     <string name="google_maps_key" />
 </resources>
