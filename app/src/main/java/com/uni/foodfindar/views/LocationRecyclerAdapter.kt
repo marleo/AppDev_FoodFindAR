@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.uni.foodfindar.Places
 import com.uni.foodfindar.R
+import com.uni.foodfindar.ar.ArView
 
 
 class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -191,8 +193,11 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             }
 
             itemView.setOnClickListener {
-                Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
-                //TODO: Intent to new activity
+                val intent = Intent(cont, ArView::class.java)
+                val bundle = Bundle()
+                bundle.putParcelable("Place", location)
+                intent.putExtras(bundle)
+                startActivity(cont, intent, null)
             }
         }
 
@@ -237,8 +242,11 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             }
 
             itemView.setOnClickListener {
-                Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
-                //TODO: Intent to new activity
+                val intent = Intent(cont, ArView::class.java)
+                val bundle = Bundle()
+                bundle.putParcelable("Place", location)
+                intent.putExtras(bundle)
+                startActivity(cont, intent, null)
             }
         }
 
@@ -283,8 +291,11 @@ class LocationRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             }
 
             itemView.setOnClickListener {
-                Toast.makeText(cont, "${this.locationName.text} clicked", Toast.LENGTH_SHORT).show()
-                //TODO: Intent to new activity
+                val intent = Intent(cont, ArView::class.java)
+                val bundle = Bundle()
+                bundle.putParcelable("Place", location)
+                intent.putExtras(bundle)
+                startActivity(cont, intent, null)
             }
         }
 
