@@ -377,6 +377,8 @@ class MainActivity : AppCompatActivity() {
                     },
                     { e ->
                         showSnackbar("Error. Check Internet/Location settings and restart!", -2)
+                        retry.isEnabled = true
+                        retry.alpha = 1F
                         e.printStackTrace()
                     }
             )
@@ -404,8 +406,6 @@ class MainActivity : AppCompatActivity() {
         nearby.isEnabled = true
         filter.isEnabled = true
         slider.isEnabled = true
-        retry.isEnabled = true
-        retry.alpha = 1F
         slider.alpha = 1F
         filter.alpha = 1F
         nearby.alpha = 1F
