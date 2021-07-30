@@ -345,6 +345,8 @@ class MainActivity : AppCompatActivity() {
         nearby.isEnabled = true
         filter.isEnabled = true
         slider.isEnabled = true
+        retry.isEnabled = true
+        retry.alpha = 1F
         slider.alpha = 1F
         filter.alpha = 1F
         nearby.alpha = 1F
