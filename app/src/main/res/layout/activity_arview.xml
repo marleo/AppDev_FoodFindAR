@@ -20,10 +20,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".arview.ArView">
+    tools:context=".ar.ArView">
 
 
-    <fragment android:name="com.uni.foodfindar.arview.ar.PlacesArFragment"
+    <fragment android:name="com.uni.foodfindar.ar.PlacesArFragment"
         android:id="@+id/ar_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
