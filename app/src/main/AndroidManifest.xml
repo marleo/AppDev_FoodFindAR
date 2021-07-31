@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.uni.foodfindar">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.camera.ar" />
 
     <application
         android:name=".views.Gps"
@@ -17,14 +23,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodfindar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".views.Nearby_locations" />
-        <activity android:name=".activity_map" />
-        <activity android:name=".views.MainActivity" />
-        <activity android:name=".views.Help" />
-        <activity android:name=".views.Settings" android:theme = "@style/Theme.Transparent" />
+        <activity android:name=".views.Nearby_locations"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ar.ArView"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity_map"
+            android:screenOrientation="portrait" />
+        <activity android:name=".views.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".views.Help"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.Settings"
+            android:theme="@style/Theme.Transparent"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.SplashScreen"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,8 +49,21 @@
         </activity>
 
         <meta-data
+            android:name="com.google.ar.core"
+            android:value="required" />
+        <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="required" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
     </application>
 
 </manifest>
