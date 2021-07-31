@@ -9,12 +9,12 @@
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="314dp"
-        android:layout_height="54dp"
+        android:layout_width="312dp"
+        android:layout_height="70dp"
         android:background="#009F5996"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center|top"
-        android:text="Click on 'Filter' to set your preferences (restaurant/cafe/bar) and select the distance on the slider below. And now enjoy our app and enjoy your meal!"
+        android:text="Click on 'Filter' to set your preferences (restaurant/cafe/bar) and select the distance on the slider below. And now enjoy our app and enjoy your meal! for more information refer to the Github-Wiki"
         android:textColor="#D8FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +61,7 @@
         android:background="#00AF85AA"
         android:fontFamily="@font/ropa_sans"
         android:gravity="center|top"
-        android:text="FoodFindAR is an app, to find restaurants, cafes and bars near your location. It will show you restaurants and more in your direct surroundings. "
+        android:text="FoodFindAR is an app, to find restaurants, cafes and bars near your location. It will show you restaurants and more in your direct surroundings."
         android:textColor="#D8FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -103,5 +103,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/abc_vector_test" />
+
+    <Button
+        android:id="@+id/githubButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Github-Wiki"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
