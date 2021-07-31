@@ -12,6 +12,8 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.util.*
 
+//TODO: IMPLEMENTATION NOT YET FINISHED
+
 class activity_map : AppCompatActivity() {
 
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1

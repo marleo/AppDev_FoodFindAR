@@ -31,7 +31,6 @@ class ArView: AppCompatActivity(), SensorEventListener {
     private val TAG = "ArView"
 
     private lateinit var arFragment: PlacesArFragment
-    private lateinit var mapFragment: SupportMapFragment
 
     // Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -47,7 +46,6 @@ class ArView: AppCompatActivity(), SensorEventListener {
     private var anchorNodeArray: MutableList<AnchorNode> = mutableListOf<AnchorNode>()
     private var place: Place? = null
     private var currentLocation: Location? = null
-    private var latLonText : TextView? = null
     private var distance: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +61,6 @@ class ArView: AppCompatActivity(), SensorEventListener {
         showSnackbar("Calibrate the device, then tap on the AR-Plane", Snackbar.LENGTH_INDEFINITE)
 
         arFragment = supportFragmentManager.findFragmentById(R.id.ar_fragment) as PlacesArFragment
-        latLonText = findViewById(R.id.latLonText)
         Log.i("PlaceName", destination?.name!!)
         place = Place(
                 "0",
@@ -103,9 +100,7 @@ class ArView: AppCompatActivity(), SensorEventListener {
     }
 
     private fun showSnackbar(message: String, length: Int){
-        val snack = Snackbar.make(findViewById(android.R.id.content), message, length).setAction("OK") {
-            it.invalidate()
-        }
+        val snack = Snackbar.make(findViewById(android.R.id.content), message, length)
         val view = snack.view
         val snackTextView: TextView = view.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
         snackTextView.gravity = Gravity.CENTER_HORIZONTAL
@@ -179,7 +174,6 @@ class ArView: AppCompatActivity(), SensorEventListener {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             currentLocation = location
             onSuccess(location)
-            latLonText?.text = "${location.longitude}, ${location.latitude}"
         }.addOnFailureListener {
             Log.e(TAG, "Could not get location")
         }
