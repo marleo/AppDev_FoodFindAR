@@ -1,5 +1,6 @@
 package com.uni.foodfindar.views
 
+
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager
 import android.graphics.BlendMode
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -21,6 +23,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RetryPolicy
 import com.android.volley.VolleyError
@@ -53,11 +56,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var logo: ImageView
     private lateinit var retry: ImageButton
 
+
+
     private var coordinates: String = "(46.616062,14.265438,46.626062,14.275438)" //Bounding Box - Left top(lat-), Left bottom(lon-), right top(lat+), right bottom(lon+)
 
     private var restaurantFilter = true
     private var cafeFilter = false
     private var barFilter = false
+
+
+
 
     private var checkedFilterArray = booleanArrayOf(restaurantFilter, cafeFilter, barFilter)
 
@@ -89,10 +97,16 @@ class MainActivity : AppCompatActivity() {
         appKey = resources.getString(R.string.preferences_key)
         retry = findViewById(R.id.retry)
 
+
+
+
         createPreferences()
-
-
         disableUI()
+
+
+
+
+
 
         setting.setOnClickListener {
 
@@ -201,6 +215,12 @@ class MainActivity : AppCompatActivity() {
         getLocation()
     }
 
+
+
+
+
+
+
     private fun getLocation() {
         if (ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getLastKnownPosition()
@@ -287,6 +307,8 @@ class MainActivity : AppCompatActivity() {
                     },
                     { e ->
                         showSnackbar("Error. Check Internet/Location settings and restart!", -2)
+                        retry.isEnabled = true
+                        retry.alpha = 1F
                         e.printStackTrace()
                     }
             )
