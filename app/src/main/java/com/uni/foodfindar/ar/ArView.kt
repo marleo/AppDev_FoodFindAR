@@ -1,20 +1,24 @@
 package com.uni.foodfindar.ar
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.getSystemService
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.SupportMapFragment
@@ -35,6 +39,8 @@ class ArView: AppCompatActivity(), SensorEventListener {
     // Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+
+
     // Sensor
     private lateinit var sensorManager: SensorManager
     private val accelerometerReading = FloatArray(3)
@@ -48,12 +54,33 @@ class ArView: AppCompatActivity(), SensorEventListener {
     private var currentLocation: Location? = null
     private var distance: Double = 0.0
 
+    private lateinit var locationCallback: LocationCallback
+    private var locationRequest: LocationRequest? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!isSupportedDevice()) {
             return
         }
         setContentView(R.layout.activity_arview)
+
+
+
+        locationRequest?.interval = 1000
+        locationRequest?.fastestInterval = 1000
+        locationRequest?.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+
+
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+                calculateDistance(locationResult.lastLocation)
+            }
+        }
+
+
+
 
         val bundle = intent.extras
         val destination = bundle?.getParcelable<Places>("Place")
@@ -70,14 +97,17 @@ class ArView: AppCompatActivity(), SensorEventListener {
         )
         sensorManager = getSystemService()!!
 
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         setUpAr()
         setUpMaps()
     }
 
+
     override fun onResume() {
         super.onResume()
+        startLocationUpdates()
         sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)?.also {
             sensorManager.registerListener(
                     this,
@@ -160,6 +190,11 @@ class ArView: AppCompatActivity(), SensorEventListener {
         Log.i("MainActivity", "Added place")
     }
 
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates(){
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
 
 
     private fun setUpMaps() {
@@ -207,6 +242,7 @@ class ArView: AppCompatActivity(), SensorEventListener {
         }
         return true
     }
+
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
     }
